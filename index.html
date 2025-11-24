@@ -35,10 +35,10 @@
 
         // Unit metadata
         const unitInfo = {
-            unit1: { title: "Labas! Kaip sekasi?", subtitle: "Pamoka 1" },
-            unit2: { title: "Kur susitinkame?", subtitle: "Pamoka 2" },
-            unit3: { title: "Skanaus!", subtitle: "Pamoka 3" },
-            unit4: { title: "Graži mūsų šeimynėlė", subtitle: "Pamoka 4" }
+            unit1: { title: "Labas! Kaip sekasi?", subtitle: "1 pamoka" },
+            unit2: { title: "Kur susitinkame?", subtitle: "2 pamoka" },
+            unit3: { title: "Skanaus!", subtitle: "3 pamoka" },
+            unit4: { title: "Graži mūsų šeimynėlė", subtitle: "4 pamoka" }
         };
 
         // Vocabulary data extracted from textbook
@@ -164,7 +164,7 @@
                 { lithuanian: "telefono numeris", english: "telephone number" },
                 { lithuanian: "televizorius", english: "TV set" },
                 { lithuanian: "trys", english: "three" },
-                { lithuanian: "truputi", english: "a bit" },
+                { lithuanian: "truputį", english: "a bit" },
                 { lithuanian: "tu", english: "you (informal)" },
                 { lithuanian: "ukrainietis, -ė", english: "Ukrainian (nationality)" },
                 { lithuanian: "universitetas", english: "university" },
@@ -628,7 +628,7 @@
                         <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
                             Žodyno pratybos
                         </h1>
-                        <p className="text-gray-600 text-center mb-8">Pamokos 1-4</p>
+                        <p className="text-gray-600 text-center mb-8">1-4 pamokos</p>
 
                         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                             <h2 className="text-xl font-semibold mb-4 text-gray-800">Pasirinkite pamoką</h2>
@@ -659,21 +659,18 @@
                                     className="w-full p-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-left"
                                 >
                                     <div className="font-semibold">📇 Kortelės</div>
-                                    <div className="text-sm opacity-90">Peržiūrėkite žodyną su apverčiamomis kortelėmis</div>
                                 </button>
                                 <button
                                     onClick={() => setMode('multipleChoice')}
                                     className="w-full p-4 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-left"
                                 >
                                     <div className="font-semibold">✓ Pasirinkite teisingą atsakymą</div>
-                                    <div className="text-sm opacity-90">Pasirinkite teisingą vertimą</div>
                                 </button>
                                 <button
                                     onClick={() => setMode('typing')}
                                     className="w-full p-4 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-left"
                                 >
                                     <div className="font-semibold">⌨️ Įrašykite atsakymą</div>
-                                    <div className="text-sm opacity-90">Praktikuokite aktyvų atsiminimą įrašydami žodį</div>
                                 </button>
                             </div>
                         </div>
@@ -710,7 +707,7 @@
                                         {isFlipped ? currentWord.lithuanian : currentWord.english}
                                     </div>
                                     <div className="text-sm text-gray-400 mt-4">
-                                        Spauskite, kad apversti
+                                        Spauskite, kad apverstumėte kortelę
                                     </div>
                                 </div>
                             </div>
