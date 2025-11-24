@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lithuanian Vocabulary Trainer</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .card-flip {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flip.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Vocabulary data extracted from textbook
+        const vocabularyData = {
+            unit1: [
+                { lithuanian: "ačiū", english: "thank you" },
+                { lithuanian: "adresas", english: "address" },
+                { lithuanian: "aikštė", english: "square" },
+                { lithuanian: "airis, -ė", english: "Irish" },
+                { lithuanian: "alus", english: "beer" },
+                { lithuanian: "amerikietis, -ė", english: "American" },
+                { lithuanian: "anglas, -ė", english: "English (nationality)" },
+                { lithuanian: "ar", english: "a question word for 'Do you / are you ...?' questions" },
+                { lithuanian: "aš", english: "I" },
+                { lithuanian: "aštuoni", english: "eight" },
+                { lithuanian: "ate", english: "bye (informal)" },
+                { lithuanian: "atsiprašau", english: "sorry / excuse me" },
+                { lithuanian: "auditorija", english: "room/auditorium" },
+                { lithuanian: "baltarusis, -ė", english: "Belarusian (nationality)" },
+                { lithuanian: "bankas", english: "bank" },
+                { lithuanian: "baras", english: "bar" },
+                { lithuanian: "blogai", english: "bad" },
+                { lithuanian: "būti, yra, buvo", english: "to be, is/are, was/were" },
+                { lithuanian: "čia", english: "here" },
+                { lithuanian: "darbuotojas, -a", english: "employee" },
+                { lithuanian: "dešimt", english: "ten" },
+                { lithuanian: "devyni", english: "nine" },
+                { lithuanian: "diena", english: "day" },
+                { lithuanian: "draugas, -ė", english: "friend" },
+                { lithuanian: "du", english: "two" },
+                { lithuanian: "elektroninis paštas", english: "e-mail" },
+                { lithuanian: "estas, -ė", english: "Estonian (nationality)" },
+                { lithuanian: "gatvė", english: "street" },
+                { lithuanian: "gėlė", english: "flower" },
+                { lithuanian: "gerai", english: "well" },
+                { lithuanian: "geras", english: "good" },
+                { lithuanian: "geros dienos", english: "have a nice day" },
+                { lithuanian: "iki (pasimatymo)", english: "see you" },
+                { lithuanian: "ispanas, -ė", english: "Spanish (nationality)" },
+                { lithuanian: "italas, -ė", english: "Italian (nationality)" },
+                { lithuanian: "iš + gen.", english: "from" },
+                { lithuanian: "japonas (-ė)", english: "Japanese (nationality)" },
+                { lithuanian: "jis", english: "he" },
+                { lithuanian: "ji", english: "she" },
+                { lithuanian: "jie", english: "they (masculine form)" },
+                { lithuanian: "jo", english: "his" },
+                { lithuanian: "jos", english: "her" },
+                { lithuanian: "jų", english: "their (both masculine and feminine)" },
+                { lithuanian: "jūs", english: "you (formal/polite)" },
+                { lithuanian: "jūsų", english: "your (formal/polite)" },
+                { lithuanian: "kaip", english: "how" },
+                { lithuanian: "Kaip sekasi?", english: "How are you?" },
+                { lithuanian: "kalbėti, kalba, kalbėjo", english: "to speak" },
+                { lithuanian: "kambarys", english: "room" },
+                { lithuanian: "kanadietis, -ė", english: "Canadian (nationality)" },
+                { lithuanian: "kartvelas, -ė / sakartvelietis, -ė", english: "Kartvelian/Georgian (nationality)" },
+                { lithuanian: "kas", english: "who" },
+                { lithuanian: "kaunietis, -ė", english: "Kaunas resident" },
+                { lithuanian: "kavinė", english: "café" },
+                { lithuanian: "keturi", english: "four" },
+                { lithuanian: "kinas, -ė", english: "Chinese (nationality)" },
+                { lithuanian: "koks, kokia", english: "what" },
+                { lithuanian: "kompiuteris", english: "computer" },
+                { lithuanian: "korėjietis, -ė", english: "Korean (nationality)" },
+                { lithuanian: "kroatas, -ė", english: "Croatian (nationality)" },
+                { lithuanian: "laba diena", english: "good afternoon" },
+                { lithuanian: "labas", english: "hello" },
+                { lithuanian: "labas rytas", english: "good morning" },
+                { lithuanian: "labas vakaras", english: "good evening" },
+                { lithuanian: "labukas", english: "hi (informal)" },
+                { lithuanian: "latvis, -ė", english: "Latvian (nationality)" },
+                { lithuanian: "lenkas, -ė", english: "Polish (nationality)" },
+                { lithuanian: "libaniatis, -ė", english: "Libanese (nationality)" },
+                { lithuanian: "lietuvis, -ė", english: "Lithuanian (nationality)" },
+                { lithuanian: "malonu (susipažinti)", english: "pleased to meet you" },
+                { lithuanian: "mano", english: "my" },
+                { lithuanian: "meksikietis, -ė", english: "Mexican" },
+                { lithuanian: "mergina", english: "girl" },
+                { lithuanian: "mes", english: "we" },
+                { lithuanian: "minus", english: "minus" },
+                { lithuanian: "mongolas, -ė", english: "Mongolian" },
+                { lithuanian: "mūsų", english: "our" },
+                { lithuanian: "namas", english: "house" },
+                { lithuanian: "naujas", english: "new" },
+                { lithuanian: "ne", english: "no" },
+                { lithuanian: "neblogai", english: "not bad" },
+                { lithuanian: "normaliai", english: "normally" },
+                { lithuanian: "norvegas, -ė", english: "Norwegian (nationality)" },
+                { lithuanian: "nulis", english: "zero" },
+                { lithuanian: "numeris", english: "number" },
+                { lithuanian: "panelė", english: "miss" },
+                { lithuanian: "pasas", english: "passport" },
+                { lithuanian: "pavardė", english: "surname / last name" },
+                { lithuanian: "penki", english: "five" },
+                { lithuanian: "plius", english: "plus" },
+                { lithuanian: "ponas", english: "mister (Mr)" },
+                { lithuanian: "ponia", english: "missis (Mrs)" },
+                { lithuanian: "portugalas, -ė", english: "Portuguese (nationality)" },
+                { lithuanian: "prancūzas, -ė", english: "French (nationality)" },
+                { lithuanian: "prospektas", english: "street (one of the main streets)" },
+                { lithuanian: "puikiai", english: "very well, great" },
+                { lithuanian: "rytas", english: "morning" },
+                { lithuanian: "rusas, -ė", english: "Russian (nationality)" },
+                { lithuanian: "septyni", english: "seven" },
+                { lithuanian: "slovakas, -ė", english: "Slovakian (nationality)" },
+                { lithuanian: "studentas, -ė", english: "student" },
+                { lithuanian: "sudie", english: "bye (a more religious way of saying goodbye)" },
+                { lithuanian: "sūnus", english: "son" },
+                { lithuanian: "suomis, -ė", english: "Finnish (nationality)" },
+                { lithuanian: "suprasti, supranta, suprato", english: "to understand" },
+                { lithuanian: "sveikas, -a", english: "hi (informal)" },
+                { lithuanian: "šalis", english: "country" },
+                { lithuanian: "šeši", english: "six" },
+                { lithuanian: "šiaip sau", english: "so-so" },
+                { lithuanian: "šiek tiek", english: "a bit" },
+                { lithuanian: "švedas, -ė", english: "Swedish (nationality)" },
+                { lithuanian: "tailandietis, -ė", english: "Thai (nationality)" },
+                { lithuanian: "taip", english: "yes" },
+                { lithuanian: "taip pat", english: "also/too" },
+                { lithuanian: "tautybė", english: "nationality" },
+                { lithuanian: "tavo", english: "your (informal)" },
+                { lithuanian: "telefonas", english: "telephone" },
+                { lithuanian: "telefono numeris", english: "telephone number" },
+                { lithuanian: "televizorius", english: "TV set" },
+                { lithuanian: "trys", english: "three" },
+                { lithuanian: "truputi", english: "a bit" },
+                { lithuanian: "tu", english: "you (informal)" },
+                { lithuanian: "ukrainietis, -ė", english: "Ukrainian (nationality)" },
+                { lithuanian: "universitetas", english: "university" },
+                { lithuanian: "užsienietis, -ė", english: "foreigner" },
+                { lithuanian: "vaikinas", english: "guy/boy" },
+                { lithuanian: "vakaras", english: "evening" },
+                { lithuanian: "vardas", english: "name" },
+                { lithuanian: "vengras, -ė", english: "Hungarian (nationality)" },
+                { lithuanian: "verslininkas, -ė", english: "businessman/businesswoman" },
+                { lithuanian: "vienas", english: "one" },
+                { lithuanian: "viso", english: "bye (informal)" },
+                { lithuanian: "viso gero", english: "goodbye" },
+                { lithuanian: "vokietis, -ė", english: "German (nationality)" }
+            ],
+            unit2: [
+                { lithuanian: "ambasada", english: "embassy" },
+                { lithuanian: "antradienis", english: "Tuesday" },
+                { lithuanian: "atostogauti, atostogauja, atostogavo", english: "to have a holiday" },
+                { lithuanian: "autobusų stotis", english: "bus station" },
+                { lithuanian: "bankas", english: "bank" },
+                { lithuanian: "baseinas", english: "pool" },
+                { lithuanian: "bažnyčia", english: "church" },
+                { lithuanian: "bendrabutis", english: "dormitory" },
+                { lithuanian: "biblioteka", english: "library" },
+                { lithuanian: "biuras", english: "office" },
+                { lithuanian: "centras", english: "centre" },
+                { lithuanian: "cigaretė", english: "cigarette" },
+                { lithuanian: "dabar", english: "now" },
+                { lithuanian: "dažnai", english: "often" },
+                { lithuanian: "dešinėje", english: "on the right" },
+                { lithuanian: "dešinen / į dešinę", english: "right (when giving directions)" },
+                { lithuanian: "dirbti, dirba, dirbo", english: "to work" },
+                { lithuanian: "egzaminas", english: "exam" },
+                { lithuanian: "eiti, eina, ėjo", english: "to walk" },
+                { lithuanian: "ekskursija", english: "excursion" },
+                { lithuanian: "fontanas", english: "fountain" },
+                { lithuanian: "gal", english: "maybe" },
+                { lithuanian: "Gal galite pakartoti?", english: "Could you repeat, please?" },
+                { lithuanian: "geležinkelio stotis", english: "train station" },
+                { lithuanian: "gyventi, gyvena, gyveno", english: "to live" },
+                { lithuanian: "į + acc.", english: "to (indicating direction)" },
+                { lithuanian: "įdomu", english: "interesting" },
+                { lithuanian: "iki + gen.", english: "until / up to" },
+                { lithuanian: "jūra", english: "sea" },
+                { lithuanian: "kaimas", english: "village/countryside" },
+                { lithuanian: "kairėje", english: "on the left" },
+                { lithuanian: "kairėn / į kairę", english: "left (when giving directions)" },
+                { lithuanian: "kambarys", english: "room" },
+                { lithuanian: "karas", english: "war" },
+                { lithuanian: "katedra", english: "cathedral" },
+                { lithuanian: "kavinė", english: "café" },
+                { lithuanian: "kepyklėlė", english: "bakery" },
+                { lithuanian: "ketvirtadienis", english: "Thursday" },
+                { lithuanian: "kino teatras", english: "cinema" },
+                { lithuanian: "kioskas", english: "kiosk" },
+                { lithuanian: "klubas", english: "club" },
+                { lithuanian: "knygynas", english: "bookshop" },
+                { lithuanian: "kur", english: "where" },
+                { lithuanian: "ligoninė", english: "hospital" },
+                { lithuanian: "linkėjimai", english: "greetings" },
+                { lithuanian: "mokykla", english: "school" },
+                { lithuanian: "muziejus", english: "museum" },
+                { lithuanian: "naktis", english: "night" },
+                { lithuanian: "paminklas", english: "monument" },
+                { lithuanian: "parduotuvė", english: "shop" },
+                { lithuanian: "parkas", english: "park" },
+                { lithuanian: "paskaita", english: "lecture" },
+                { lithuanian: "pasukti, pasuka, pasuko", english: "to turn" },
+                { lithuanian: "paštas", english: "post office" },
+                { lithuanian: "pavasaris", english: "spring" },
+                { lithuanian: "penktadienis", english: "Friday" },
+                { lithuanian: "pilis", english: "castle" },
+                { lithuanian: "pirmadienis", english: "Monday" },
+                { lithuanian: "prašau", english: "please" },
+                { lithuanian: "prie + gen.", english: "near / close to" },
+                { lithuanian: "puikus", english: "great" },
+                { lithuanian: "restoranas", english: "restaurant" },
+                { lithuanian: "rotušė", english: "town hall" },
+                { lithuanian: "ruduo", english: "autumn" },
+                { lithuanian: "sankryža", english: "crossroad" },
+                { lithuanian: "savaitgalis", english: "weekend" },
+                { lithuanian: "sekmadienis", english: "Sunday" },
+                { lithuanian: "skubėti, skuba, skubėjo", english: "to hurry" },
+                { lithuanian: "sporto klubas", english: "sports club" },
+                { lithuanian: "stotelė", english: "bus stop" },
+                { lithuanian: "stotis", english: "station" },
+                { lithuanian: "studijuoti, studijuoja, studijavo", english: "to study" },
+                { lithuanian: "susitikti, susitinka, susitiko", english: "to meet" },
+                { lithuanian: "šalta", english: "cold" },
+                { lithuanian: "šeštadienis", english: "Saturday" },
+                { lithuanian: "šiandien", english: "today" },
+                { lithuanian: "šviesoforas", english: "traffic lights" },
+                { lithuanian: "tada", english: "then" },
+                { lithuanian: "teatras", english: "theatre" },
+                { lithuanian: "tiesiai", english: "straight" },
+                { lithuanian: "tiltas", english: "bridge" },
+                { lithuanian: "trečiadienis", english: "Wednesday" },
+                { lithuanian: "turgus", english: "market" },
+                { lithuanian: "turistas, -ė", english: "tourist" },
+                { lithuanian: "upė", english: "river" },
+                { lithuanian: "už + gen.", english: "behind" },
+                { lithuanian: "užsienis", english: "abroad" },
+                { lithuanian: "vanduo", english: "water" },
+                { lithuanian: "vasara", english: "summer" },
+                { lithuanian: "važiuoti, važiuoja, važiavo", english: "to go (by some means of transport)" },
+                { lithuanian: "vėluoti, vėluoja, vėlavo", english: "to be late" },
+                { lithuanian: "viešbutis", english: "hotel" },
+                { lithuanian: "vykti, vyksta, vyko", english: "to take place" },
+                { lithuanian: "zoologijos sodas", english: "zoo" },
+                { lithuanian: "žiema", english: "winter" }
+            ]
+        };
+
+        function App() {
+            const [currentUnit, setCurrentUnit] = useState('unit1');
+            const [mode, setMode] = useState('menu'); // menu, flashcards, multipleChoice, typing
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [isFlipped, setIsFlipped] = useState(false);
+            const [userAnswer, setUserAnswer] = useState('');
+            const [feedback, setFeedback] = useState('');
+            const [score, setScore] = useState({ correct: 0, total: 0 });
+            const [shuffledVocab, setShuffledVocab] = useState([]);
+            const [multipleChoiceOptions, setMultipleChoiceOptions] = useState([]);
+
+            const currentVocab = vocabularyData[currentUnit];
+
+            useEffect(() => {
+                // Shuffle vocabulary when unit or mode changes
+                const shuffled = [...currentVocab].sort(() => Math.random() - 0.5);
+                setShuffledVocab(shuffled);
+                setCurrentIndex(0);
+                setScore({ correct: 0, total: 0 });
+            }, [currentUnit, mode]);
+
+            useEffect(() => {
+                if (mode === 'multipleChoice' && shuffledVocab.length > 0) {
+                    generateMultipleChoiceOptions();
+                }
+            }, [currentIndex, shuffledVocab, mode]);
+
+            const generateMultipleChoiceOptions = () => {
+                const currentWord = shuffledVocab[currentIndex];
+                const otherWords = shuffledVocab.filter((_, idx) => idx !== currentIndex);
+                const randomOptions = otherWords.sort(() => Math.random() - 0.5).slice(0, 3);
+                const allOptions = [currentWord, ...randomOptions].sort(() => Math.random() - 0.5);
+                setMultipleChoiceOptions(allOptions);
+            };
+
+            const handleNext = () => {
+                if (currentIndex < shuffledVocab.length - 1) {
+                    setCurrentIndex(currentIndex + 1);
+                    setIsFlipped(false);
+                    setUserAnswer('');
+                    setFeedback('');
+                } else {
+                    setMode('menu');
+                }
+            };
+
+            const handleFlip = () => {
+                setIsFlipped(!isFlipped);
+            };
+
+            const checkAnswer = () => {
+                const currentWord = shuffledVocab[currentIndex];
+                const normalizedAnswer = userAnswer.toLowerCase().trim();
+                const normalizedCorrect = currentWord.lithuanian.toLowerCase().trim();
+
+                if (normalizedAnswer === normalizedCorrect) {
+                    setFeedback('correct');
+                    setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
+                } else {
+                    setFeedback('incorrect');
+                    setScore({ ...score, total: score.total + 1 });
+                }
+
+                setTimeout(() => {
+                    handleNext();
+                }, 1500);
+            };
+
+            const handleMultipleChoice = (selectedWord) => {
+                const currentWord = shuffledVocab[currentIndex];
+                if (selectedWord.lithuanian === currentWord.lithuanian) {
+                    setFeedback('correct');
+                    setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
+                } else {
+                    setFeedback('incorrect');
+                    setScore({ ...score, total: score.total + 1 });
+                }
+
+                setTimeout(() => {
+                    handleNext();
+                }, 1500);
+            };
+
+            const MenuScreen = () => (
+                <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-6">
+                    <div className="max-w-2xl mx-auto">
+                        <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
+                            Lithuanian Vocabulary Trainer
+                        </h1>
+                        <p className="text-gray-600 text-center mb-8">Learn vocabulary from your textbook</p>
+
+                        {/* Unit Selection */}
+                        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Select Unit</h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <button
+                                    onClick={() => setCurrentUnit('unit1')}
+                                    className={`p-4 rounded-lg border-2 transition-all ${
+                                        currentUnit === 'unit1'
+                                            ? 'border-green-500 bg-green-50'
+                                            : 'border-gray-200 hover:border-green-300'
+                                    }`}
+                                >
+                                    <div className="font-semibold">Unit 1</div>
+                                    <div className="text-sm text-gray-600">Hi! How are you?</div>
+                                    <div className="text-xs text-gray-500 mt-1">{vocabularyData.unit1.length} words</div>
+                                </button>
+                                <button
+                                    onClick={() => setCurrentUnit('unit2')}
+                                    className={`p-4 rounded-lg border-2 transition-all ${
+                                        currentUnit === 'unit2'
+                                            ? 'border-green-500 bg-green-50'
+                                            : 'border-gray-200 hover:border-green-300'
+                                    }`}
+                                >
+                                    <div className="font-semibold">Unit 2</div>
+                                    <div className="text-sm text-gray-600">Where are we meeting?</div>
+                                    <div className="text-xs text-gray-500 mt-1">{vocabularyData.unit2.length} words</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Practice Mode Selection */}
+                        <div className="bg-white rounded-lg shadow-md p-6">
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Choose Practice Mode</h2>
+                            <div className="space-y-3">
+                                <button
+                                    onClick={() => setMode('flashcards')}
+                                    className="w-full p-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-left"
+                                >
+                                    <div className="font-semibold">📇 Flashcards</div>
+                                    <div className="text-sm opacity-90">Review vocabulary with flip cards</div>
+                                </button>
+                                <button
+                                    onClick={() => setMode('multipleChoice')}
+                                    className="w-full p-4 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-left"
+                                >
+                                    <div className="font-semibold">✓ Multiple Choice</div>
+                                    <div className="text-sm opacity-90">Select the correct translation</div>
+                                </button>
+                                <button
+                                    onClick={() => setMode('typing')}
+                                    className="w-full p-4 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-left"
+                                >
+                                    <div className="font-semibold">⌨️ Type the Answer</div>
+                                    <div className="text-sm opacity-90">Practice active recall by typing</div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const FlashcardsMode = () => {
+                const currentWord = shuffledVocab[currentIndex];
+                if (!currentWord) return null;
+
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
+                        <div className="max-w-2xl mx-auto">
+                            <div className="flex justify-between items-center mb-6">
+                                <button
+                                    onClick={() => setMode('menu')}
+                                    className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                                >
+                                    ← Back to Menu
+                                </button>
+                                <div className="text-gray-700 font-medium">
+                                    Card {currentIndex + 1} / {shuffledVocab.length}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-xl p-8 mb-6 min-h-[300px] flex items-center justify-center cursor-pointer"
+                                 onClick={handleFlip}>
+                                <div className="text-center">
+                                    <div className="text-sm text-gray-500 mb-2">
+                                        {isFlipped ? 'Lithuanian' : 'English'}
+                                    </div>
+                                    <div className="text-3xl font-bold text-gray-800">
+                                        {isFlipped ? currentWord.lithuanian : currentWord.english}
+                                    </div>
+                                    <div className="text-sm text-gray-400 mt-4">
+                                        Click to flip
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={handleFlip}
+                                    className="flex-1 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                                >
+                                    Flip Card
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    className="flex-1 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                                >
+                                    Next Card →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const MultipleChoiceMode = () => {
+                const currentWord = shuffledVocab[currentIndex];
+                if (!currentWord || multipleChoiceOptions.length === 0) return null;
+
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-6">
+                        <div className="max-w-2xl mx-auto">
+                            <div className="flex justify-between items-center mb-6">
+                                <button
+                                    onClick={() => setMode('menu')}
+                                    className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                                >
+                                    ← Back to Menu
+                                </button>
+                                <div className="text-gray-700 font-medium">
+                                    Question {currentIndex + 1} / {shuffledVocab.length}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
+                                <div className="text-center mb-8">
+                                    <div className="text-sm text-gray-500 mb-2">Translate to Lithuanian:</div>
+                                    <div className="text-3xl font-bold text-gray-800">
+                                        {currentWord.english}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {multipleChoiceOptions.map((option, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => handleMultipleChoice(option)}
+                                            disabled={feedback !== ''}
+                                            className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
+                                                feedback === '' 
+                                                    ? 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
+                                                    : option.lithuanian === currentWord.lithuanian
+                                                    ? 'border-green-500 bg-green-50'
+                                                    : 'border-gray-300 opacity-50'
+                                            }`}
+                                        >
+                                            {option.lithuanian}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {feedback && (
+                                    <div className={`mt-6 p-4 rounded-lg text-center font-semibold ${
+                                        feedback === 'correct' 
+                                            ? 'bg-green-100 text-green-800' 
+                                            : 'bg-red-100 text-red-800'
+                                    }`}>
+                                        {feedback === 'correct' ? '✓ Correct!' : `✗ Incorrect. The answer is: ${currentWord.lithuanian}`}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow p-4 text-center">
+                                <div className="text-sm text-gray-600">Score:</div>
+                                <div className="text-2xl font-bold text-gray-800">
+                                    {score.correct} / {score.total}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const TypingMode = () => {
+                const currentWord = shuffledVocab[currentIndex];
+                if (!currentWord) return null;
+
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 p-6">
+                        <div className="max-w-2xl mx-auto">
+                            <div className="flex justify-between items-center mb-6">
+                                <button
+                                    onClick={() => setMode('menu')}
+                                    className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                                >
+                                    ← Back to Menu
+                                </button>
+                                <div className="text-gray-700 font-medium">
+                                    Question {currentIndex + 1} / {shuffledVocab.length}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
+                                <div className="text-center mb-8">
+                                    <div className="text-sm text-gray-500 mb-2">Type in Lithuanian:</div>
+                                    <div className="text-3xl font-bold text-gray-800 mb-6">
+                                        {currentWord.english}
+                                    </div>
+
+                                    <input
+                                        type="text"
+                                        value={userAnswer}
+                                        onChange={(e) => setUserAnswer(e.target.value)}
+                                        onKeyPress={(e) => e.key === 'Enter' && userAnswer && checkAnswer()}
+                                        placeholder="Type your answer..."
+                                        disabled={feedback !== ''}
+                                        className="w-full p-4 text-xl border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
+                                        autoFocus
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={checkAnswer}
+                                    disabled={!userAnswer || feedback !== ''}
+                                    className="w-full px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Check Answer
+                                </button>
+
+                                {feedback && (
+                                    <div className={`mt-6 p-4 rounded-lg text-center font-semibold ${
+                                        feedback === 'correct' 
+                                            ? 'bg-green-100 text-green-800' 
+                                            : 'bg-red-100 text-red-800'
+                                    }`}>
+                                        {feedback === 'correct' 
+                                            ? '✓ Correct!' 
+                                            : `✗ Incorrect. The correct answer is: ${currentWord.lithuanian}`}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow p-4 text-center">
+                                <div className="text-sm text-gray-600">Score:</div>
+                                <div className="text-2xl font-bold text-gray-800">
+                                    {score.correct} / {score.total}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <>
+                    {mode === 'menu' && <MenuScreen />}
+                    {mode === 'flashcards' && <FlashcardsMode />}
+                    {mode === 'multipleChoice' && <MultipleChoiceMode />}
+                    {mode === 'typing' && <TypingMode />}
+                </>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
