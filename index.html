@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lithuanian Vocabulary Trainer</title>
+    <title>Žodyno pratybos (1-4 pamokos)</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -32,6 +32,14 @@
 
     <script type="text/babel">
         const { useState, useEffect } = React;
+
+        // Unit metadata
+        const unitInfo = {
+            unit1: { title: "Labas! Kaip sekasi?", subtitle: "Pamoka 1" },
+            unit2: { title: "Kur susitinkame?", subtitle: "Pamoka 2" },
+            unit3: { title: "Skanaus!", subtitle: "Pamoka 3" },
+            unit4: { title: "Graži mūsų šeimynėlė", subtitle: "Pamoka 4" }
+        };
 
         // Vocabulary data extracted from textbook
         const vocabularyData = {
@@ -267,12 +275,274 @@
                 { lithuanian: "vykti, vyksta, vyko", english: "to take place" },
                 { lithuanian: "zoologijos sodas", english: "zoo" },
                 { lithuanian: "žiema", english: "winter" }
+            ],
+            unit3: [
+                { lithuanian: "agurkas", english: "cucumber" },
+                { lithuanian: "aišku", english: "clear, of course" },
+                { lithuanian: "aliejus", english: "oil" },
+                { lithuanian: "alkanas, -a", english: "hungry" },
+                { lithuanian: "alkoholis", english: "alcohol" },
+                { lithuanian: "alus", english: "beer" },
+                { lithuanian: "apelsinas", english: "orange" },
+                { lithuanian: "arbata", english: "tea" },
+                { lithuanian: "aštrus, -i", english: "spicy" },
+                { lithuanian: "baltas, -a", english: "white" },
+                { lithuanian: "bananas", english: "banana" },
+                { lithuanian: "bandelė", english: "bun/pastry" },
+                { lithuanian: "baravykas", english: "boletus" },
+                { lithuanian: "be", english: "without (+ gen.)" },
+                { lithuanian: "brangus, -i", english: "expensive" },
+                { lithuanian: "braškė", english: "strawberry" },
+                { lithuanian: "bulvė", english: "potato" },
+                { lithuanian: "burokėlis", english: "beetroot" },
+                { lithuanian: "centas", english: "cent" },
+                { lithuanian: "citrina", english: "lemon" },
+                { lithuanian: "cukrus", english: "sugar" },
+                { lithuanian: "česnakas", english: "garlic" },
+                { lithuanian: "daržovė", english: "vegetable" },
+                { lithuanian: "dažnai", english: "often" },
+                { lithuanian: "dešra", english: "sausage" },
+                { lithuanian: "didelis, -ė", english: "big/large" },
+                { lithuanian: "dribsniai", english: "cereal" },
+                { lithuanian: "druska", english: "salt" },
+                { lithuanian: "duona", english: "bread" },
+                { lithuanian: "euras", english: "euro" },
+                { lithuanian: "ežeras", english: "lake" },
+                { lithuanian: "gaminti, gamina, gamino", english: "to cook" },
+                { lithuanian: "geltonas, -a", english: "yellow" },
+                { lithuanian: "gerti, geria, gėrė", english: "to drink" },
+                { lithuanian: "gėrimas", english: "drink" },
+                { lithuanian: "grybas", english: "mushroom" },
+                { lithuanian: "grietinė", english: "sour cream" },
+                { lithuanian: "grietinėlė", english: "cream" },
+                { lithuanian: "grynaisiais", english: "in cash" },
+                { lithuanian: "imbieras", english: "ginger" },
+                { lithuanian: "ypač", english: "especially" },
+                { lithuanian: "jautiena", english: "beef" },
+                { lithuanian: "jei kas", english: "just in case" },
+                { lithuanian: "jogurtas", english: "yoghurt" },
+                { lithuanian: "juodas, -a", english: "black" },
+                { lithuanian: "kq", english: "what (a question word for accusative)" },
+                { lithuanian: "kainuoti, kainuoja, kainavo", english: "to cost" },
+                { lithuanian: "kalakutiena", english: "turkey" },
+                { lithuanian: "karštas, -a", english: "hot" },
+                { lithuanian: "kartais", english: "sometimes" },
+                { lithuanian: "kava", english: "coffee" },
+                { lithuanian: "kefyras", english: "kefir" },
+                { lithuanian: "kepsnys", english: "steak, roast" },
+                { lithuanian: "kepti", english: "to bake, to fry" },
+                { lithuanian: "kiauliena", english: "pork" },
+                { lithuanian: "kiaušinis", english: "egg" },
+                { lithuanian: "kitas, -a", english: "other/next" },
+                { lithuanian: "klientas, -ė", english: "client" },
+                { lithuanian: "ko", english: "what (a question word for genitive)" },
+                { lithuanian: "kopūstas", english: "cabbage" },
+                { lithuanian: "kortelė", english: "card" },
+                { lithuanian: "košė", english: "porridge / mashed potatoes" },
+                { lithuanian: "kotletas", english: "meat ball" },
+                { lithuanian: "krapai", english: "dill" },
+                { lithuanian: "kriaušė", english: "pear" },
+                { lithuanian: "kumpis", english: "ham" },
+                { lithuanian: "ledai", english: "ice-cream" },
+                { lithuanian: "liesas, -a", english: "low fat" },
+                { lithuanian: "makaronai", english: "pasta" },
+                { lithuanian: "mandarinas", english: "tangerine" },
+                { lithuanian: "manyti, mano, manė", english: "to think" },
+                { lithuanian: "medus", english: "honey" },
+                { lithuanian: "mėgti, mėgsta, mėgo", english: "to like" },
+                { lithuanian: "mėlynas, -a", english: "blue" },
+                { lithuanian: "mėsa", english: "meat" },
+                { lithuanian: "miltai", english: "flour" },
+                { lithuanian: "morka", english: "carrot" },
+                { lithuanian: "nesu tikras, -a", english: "I'm not sure" },
+                { lithuanian: "nežinau", english: "I don't know" },
+                { lithuanian: "niekada", english: "never" },
+                { lithuanian: "o", english: "and (used for cohesion when starting questions); while (used as a conjunction, it creates contrast)" },
+                { lithuanian: "obuolys", english: "apple" },
+                { lithuanian: "padavėjas, -a", english: "waiter/waitress" },
+                { lithuanian: "padažas", english: "sauce" },
+                { lithuanian: "paprastai", english: "usually" },
+                { lithuanian: "paprika", english: "bell pepper" },
+                { lithuanian: "persikas", english: "peach" },
+                { lithuanian: "pienas", english: "milk" },
+                { lithuanian: "pietauti, pietauja, pietavo", english: "to have lunch" },
+                { lithuanian: "pigus, -i", english: "cheap" },
+                { lithuanian: "pipirai", english: "pepper (seasoning)" },
+                { lithuanian: "pyragas", english: "pie" },
+                { lithuanian: "pomidoras", english: "tomato" },
+                { lithuanian: "produktas", english: "product" },
+                { lithuanian: "pupelė", english: "bean" },
+                { lithuanian: "pusryčiauti, pusryčiauja, pusryčiavo", english: "to have breakfast" },
+                { lithuanian: "ragauti, ragauja, ragavo", english: "to try / to taste" },
+                { lithuanian: "raudonas, -a", english: "red" },
+                { lithuanian: "reikia", english: "need" },
+                { lithuanian: "retai", english: "rarely" },
+                { lithuanian: "riebus, -i", english: "fat" },
+                { lithuanian: "riešutas", english: "nut" },
+                { lithuanian: "rytoj", english: "tomorrow" },
+                { lithuanian: "ryžiai", english: "rice" },
+                { lithuanian: "rudas, -a", english: "brown" },
+                { lithuanian: "rūgštus, -i", english: "sour" },
+                { lithuanian: "saldainis", english: "candy" },
+                { lithuanian: "saldumynai", english: "desserts" },
+                { lithuanian: "saldus, -i", english: "sweet" },
+                { lithuanian: "salota, -os", english: "lettuce/salad" },
+                { lithuanian: "sausainis", english: "biscuit" },
+                { lithuanian: "senamiesitis", english: "old town" },
+                { lithuanian: "skambinti, skambina, skambino", english: "to call" },
+                { lithuanian: "skanaus", english: "enjoy your meal" },
+                { lithuanian: "skanus, -i", english: "tasty" },
+                { lithuanian: "slyva", english: "plum" },
+                { lithuanian: "sriuba", english: "soup" },
+                { lithuanian: "su", english: "with" },
+                { lithuanian: "sultys", english: "juice" },
+                { lithuanian: "sumuštinis", english: "sandwich" },
+                { lithuanian: "sūris", english: "cheese" },
+                { lithuanian: "sūrus, -i", english: "salty" },
+                { lithuanian: "sveikas (-a)", english: "hello" },
+                { lithuanian: "sviestas", english: "butter" },
+                { lithuanian: "svogūnas", english: "onion" },
+                { lithuanian: "šaltas, -a", english: "cold" },
+                { lithuanian: "šiltas, -a", english: "warm" },
+                { lithuanian: "šokoladas", english: "chocolate" },
+                { lithuanian: "tikras, -a", english: "sure" },
+                { lithuanian: "tortas", english: "cake" },
+                { lithuanian: "turbūt", english: "maybe" },
+                { lithuanian: "uoga", english: "berry" },
+                { lithuanian: "uogienė", english: "jam" },
+                { lithuanian: "vaisius", english: "fruit" },
+                { lithuanian: "vakarieniauti, vakarieniauja, vakarieniavo", english: "to have dinner" },
+                { lithuanian: "valgyti, valgo, valgė", english: "to eat" },
+                { lithuanian: "varškė", english: "curd / cottage cheese" },
+                { lithuanian: "veganas, -ė", english: "vegan" },
+                { lithuanian: "vegetaras, -ė", english: "vegetarian" },
+                { lithuanian: "vynas", english: "wine" },
+                { lithuanian: "vynuogė", english: "grape" },
+                { lithuanian: "visada", english: "always" },
+                { lithuanian: "vyšnia", english: "cherry" },
+                { lithuanian: "vištiena", english: "chicken" },
+                { lithuanian: "žalias, -ia", english: "raw/green" },
+                { lithuanian: "žirnis", english: "pea" },
+                { lithuanian: "žuvis", english: "fish" }
+            ],
+            unit4: [
+                { lithuanian: "administratorius, -ė", english: "administrator" },
+                { lithuanian: "aktorius, -ė", english: "actor/actress" },
+                { lithuanian: "alio", english: "hello (answering the phone)" },
+                { lithuanian: "anūkas, -ė", english: "grandson/granddaughter" },
+                { lithuanian: "apkūnus, -i", english: "overweight" },
+                { lithuanian: "ateiti, ateina, atėjo", english: "to come (on foot)" },
+                { lithuanian: "atidaryti, atidaro, atidarė", english: "to open" },
+                { lithuanian: "atvažiuoti, atvažiuoja, atvažiavo", english: "to come (by some means of transport)" },
+                { lithuanian: "aukštas, -a", english: "tall/high" },
+                { lithuanian: "berniukas", english: "boy" },
+                { lithuanian: "bet", english: "but" },
+                { lithuanian: "brolis", english: "brother" },
+                { lithuanian: "dar", english: "still" },
+                { lithuanian: "daug", english: "a lot of / many / much" },
+                { lithuanian: "dėdė", english: "uncle" },
+                { lithuanian: "dėstytojas, -a", english: "teacher (at the university)" },
+                { lithuanian: "direktorius, -ė", english: "director" },
+                { lithuanian: "duktė / dukra", english: "daughter" },
+                { lithuanian: "galėti, gali, galėjo", english: "to can / to be able to" },
+                { lithuanian: "gydytojas, -a", english: "doctor" },
+                { lithuanian: "giminaitis, -ė", english: "relative" },
+                { lithuanian: "gimtadienis", english: "birthday" },
+                { lithuanian: "gražus, -i", english: "beautiful/handsome" },
+                { lithuanian: "grupė", english: "group" },
+                { lithuanian: "įdomus, -i", english: "interesting" },
+                { lithuanian: "inžinierius, -ė", english: "engineer" },
+                { lithuanian: "istorija", english: "history" },
+                { lithuanian: "išsiskyręs, -usi", english: "divorced" },
+                { lithuanian: "ištekėjusi", english: "married (about a woman)" },
+                { lithuanian: "jaunas, -a", english: "young" },
+                { lithuanian: "kaimynas, -ė", english: "neighbour" },
+                { lithuanian: "kam?", english: "to whom? (a question word for dative)" },
+                { lithuanian: "katė", english: "cat" },
+                { lithuanian: "keliauti, keliauja, keliavo", english: "to travel" },
+                { lithuanian: "kiek", english: "how much / how many" },
+                { lithuanian: "kirpėjas, -a", english: "hairdresser" },
+                { lithuanian: "klientas, -ė", english: "client" },
+                { lithuanian: "koks? / kokia?", english: "what? (a question word for a description)" },
+                { lithuanian: "kvailas, -a", english: "stupid" },
+                { lithuanian: "kviesti, kviečia, kvietė", english: "to invite" },
+                { lithuanian: "laikas", english: "time" },
+                { lithuanian: "laikyti, laiko, laikė egzaminą", english: "to take an exam" },
+                { lithuanian: "laimingas, -a", english: "happy" },
+                { lithuanian: "langas", english: "window" },
+                { lithuanian: "lieknas, -a", english: "slim" },
+                { lithuanian: "linksmas, -a", english: "funny" },
+                { lithuanian: "liūdnas, -a", english: "sad" },
+                { lithuanian: "malonus, -i", english: "nice" },
+                { lithuanian: "mama", english: "mum" },
+                { lithuanian: "mylėti, myli, mylėjo", english: "to love" },
+                { lithuanian: "miręs, -usi", english: "dead" },
+                { lithuanian: "močiutė", english: "grandmother" },
+                { lithuanian: "mokytojas, -a", english: "teacher (at school)" },
+                { lithuanian: "motina", english: "mother" },
+                { lithuanian: "namie / namuose", english: "at home" },
+                { lithuanian: "nei... nei...", english: "neither... nor..." },
+                { lithuanian: "norėti, nori, norėjo", english: "to want" },
+                { lithuanian: "nuobodus, -i", english: "boring" },
+                { lithuanian: "odontologas, -ė", english: "dentist" },
+                { lithuanian: "pabaiga", english: "end" },
+                { lithuanian: "padavėjas, -a", english: "waiter/waitress" },
+                { lithuanian: "padėti, padeda, padėjo", english: "to help" },
+                { lithuanian: "(pa)klausti, (pa)klausia, (pa)klausė", english: "to ask" },
+                { lithuanian: "papūga", english: "parrot" },
+                { lithuanian: "pasivaikščioti, pasivaikščioja, pasivaikščiojo", english: "to go for a walk" },
+                { lithuanian: "patikti, patinka, patiko", english: "to like" },
+                { lithuanian: "pirmas, -a", english: "first" },
+                { lithuanian: "planas", english: "plan" },
+                { lithuanian: "programuotojas, -a", english: "programmer" },
+                { lithuanian: "prosenelis", english: "great-grandfather" },
+                { lithuanian: "prosenelė", english: "great-grandmother" },
+                { lithuanian: "protingas, -a", english: "clever/smart" },
+                { lithuanian: "pusbrolis", english: "cousin (male)" },
+                { lithuanian: "pusseserė", english: "cousin (female)" },
+                { lithuanian: "rezervuoti, rezervuoja, rezervavo", english: "to book" },
+                { lithuanian: "sėdėti, sėdi, sėdėjo", english: "to sit" },
+                { lithuanian: "semestras", english: "semester" },
+                { lithuanian: "senas, -a", english: "old" },
+                { lithuanian: "senelė", english: "grandmother" },
+                { lithuanian: "senelis", english: "grandfather" },
+                { lithuanian: "sesė / sesuo", english: "sister" },
+                { lithuanian: "stovėti, stovi, stovėjo", english: "to stand" },
+                { lithuanian: "sūnus", english: "son" },
+                { lithuanian: "suoliukas", english: "bench" },
+                { lithuanian: "šeima", english: "family" },
+                { lithuanian: "šnekus, -i", english: "talkative" },
+                { lithuanian: "šuniukas", english: "a small dog" },
+                { lithuanian: "šuo", english: "dog" },
+                { lithuanian: "šviesus, -i", english: "light/blond" },
+                { lithuanian: "tamsus, -i", english: "dark/brunette" },
+                { lithuanian: "teisininkas, -ė", english: "lawyer" },
+                { lithuanian: "televizorius", english: "TV set" },
+                { lithuanian: "teta", english: "aunt" },
+                { lithuanian: "tėtis", english: "dad" },
+                { lithuanian: "tėvas", english: "father" },
+                { lithuanian: "tylus, -i", english: "quiet/silent" },
+                { lithuanian: "turėti, turi, turėjo", english: "to have" },
+                { lithuanian: "ūkininkas, -ė", english: "farmer" },
+                { lithuanian: "vadybininkas, -ė", english: "manager" },
+                { lithuanian: "vedęs", english: "married (about a man)" },
+                { lithuanian: "veikti, veikia, veikė", english: "to do" },
+                { lithuanian: "vėluoti, vėluoja, vėlavo", english: "to be late" },
+                { lithuanian: "verslininkas, -ė", english: "businessman/businesswoman" },
+                { lithuanian: "vertėjas, -a", english: "translator/interpreter" },
+                { lithuanian: "vyras", english: "man/husband" },
+                { lithuanian: "žaisti, žaidžia, žaidė", english: "to play" },
+                { lithuanian: "žemas, -a", english: "short/low" },
+                { lithuanian: "žinoma", english: "of course" },
+                { lithuanian: "žiūrėti, žiūri, žiūrėjo", english: "to watch" },
+                { lithuanian: "žmona", english: "wife" },
+                { lithuanian: "žurnalistas, -ė", english: "journalist" }
             ]
         };
 
         function App() {
             const [currentUnit, setCurrentUnit] = useState('unit1');
-            const [mode, setMode] = useState('menu'); // menu, flashcards, multipleChoice, typing
+            const [mode, setMode] = useState('menu');
             const [currentIndex, setCurrentIndex] = useState(0);
             const [isFlipped, setIsFlipped] = useState(false);
             const [userAnswer, setUserAnswer] = useState('');
@@ -284,7 +554,6 @@
             const currentVocab = vocabularyData[currentUnit];
 
             useEffect(() => {
-                // Shuffle vocabulary when unit or mode changes
                 const shuffled = [...currentVocab].sort(() => Math.random() - 0.5);
                 setShuffledVocab(shuffled);
                 setCurrentIndex(0);
@@ -355,67 +624,56 @@
 
             const MenuScreen = () => (
                 <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-6">
-                    <div className="max-w-2xl mx-auto">
+                    <div className="max-w-3xl mx-auto">
                         <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
-                            Lithuanian Vocabulary Trainer
+                            Žodyno pratybos
                         </h1>
-                        <p className="text-gray-600 text-center mb-8">Learn vocabulary from your textbook</p>
+                        <p className="text-gray-600 text-center mb-8">Pamokos 1-4</p>
 
-                        {/* Unit Selection */}
                         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Select Unit</h2>
-                            <div className="grid grid-cols-2 gap-4">
-                                <button
-                                    onClick={() => setCurrentUnit('unit1')}
-                                    className={`p-4 rounded-lg border-2 transition-all ${
-                                        currentUnit === 'unit1'
-                                            ? 'border-green-500 bg-green-50'
-                                            : 'border-gray-200 hover:border-green-300'
-                                    }`}
-                                >
-                                    <div className="font-semibold">Unit 1</div>
-                                    <div className="text-sm text-gray-600">Hi! How are you?</div>
-                                    <div className="text-xs text-gray-500 mt-1">{vocabularyData.unit1.length} words</div>
-                                </button>
-                                <button
-                                    onClick={() => setCurrentUnit('unit2')}
-                                    className={`p-4 rounded-lg border-2 transition-all ${
-                                        currentUnit === 'unit2'
-                                            ? 'border-green-500 bg-green-50'
-                                            : 'border-gray-200 hover:border-green-300'
-                                    }`}
-                                >
-                                    <div className="font-semibold">Unit 2</div>
-                                    <div className="text-sm text-gray-600">Where are we meeting?</div>
-                                    <div className="text-xs text-gray-500 mt-1">{vocabularyData.unit2.length} words</div>
-                                </button>
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Pasirinkite pamoką</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {Object.keys(vocabularyData).map((unitKey) => (
+                                    <button
+                                        key={unitKey}
+                                        onClick={() => setCurrentUnit(unitKey)}
+                                        className={`p-4 rounded-lg border-2 transition-all text-left ${
+                                            currentUnit === unitKey
+                                                ? 'border-green-500 bg-green-50'
+                                                : 'border-gray-200 hover:border-green-300'
+                                        }`}
+                                    >
+                                        <div className="font-semibold text-gray-800">{unitInfo[unitKey].title}</div>
+                                        <div className="text-sm text-gray-600 mt-1">{unitInfo[unitKey].subtitle}</div>
+                                        <div className="text-xs text-gray-500 mt-1">{vocabularyData[unitKey].length} žodžiai</div>
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
-                        {/* Practice Mode Selection */}
                         <div className="bg-white rounded-lg shadow-md p-6">
-                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Choose Practice Mode</h2>
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Pasirinkite pratybų tipą</h2>
                             <div className="space-y-3">
                                 <button
                                     onClick={() => setMode('flashcards')}
                                     className="w-full p-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-left"
                                 >
-                                    <div className="font-semibold">📇 Flashcards</div>
-                                    <div className="text-sm opacity-90">Review vocabulary with flip cards</div>
+                                    <div className="font-semibold">📇 Kortelės</div>
+                                    <div className="text-sm opacity-90">Peržiūrėkite žodyną su apverčiamomis kortelėmis</div>
                                 </button>
                                 <button
                                     onClick={() => setMode('multipleChoice')}
                                     className="w-full p-4 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-left"
                                 >
-                                    <div className="font-semibold">✓ Multiple Choice</div>
-                                    <div className="text-sm opacity-90">Select the correct translation</div>
+                                    <div className="font-semibold">✓ Pasirinkite teisingą atsakymą</div>
+                                    <div className="text-sm opacity-90">Pasirinkite teisingą vertimą</div>
                                 </button>
                                 <button
                                     onClick={() => setMode('typing')}
                                     className="w-full p-4 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-left"
                                 >
-                                    <div className="font-semibold">⌨️ Type the Answer</div>
-                                    <div className="text-sm opacity-90">Practice active recall by typing</div>
+                                    <div className="font-semibold">⌨️ Įrašykite atsakymą</div>
+                                    <div className="text-sm opacity-90">Praktikuokite aktyvų atsiminimą įrašydami žodį</div>
                                 </button>
                             </div>
                         </div>
@@ -435,10 +693,10 @@
                                     onClick={() => setMode('menu')}
                                     className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
                                 >
-                                    ← Back to Menu
+                                    ← Grįžti į meniu
                                 </button>
                                 <div className="text-gray-700 font-medium">
-                                    Card {currentIndex + 1} / {shuffledVocab.length}
+                                    Kortelė {currentIndex + 1} / {shuffledVocab.length}
                                 </div>
                             </div>
 
@@ -446,13 +704,13 @@
                                  onClick={handleFlip}>
                                 <div className="text-center">
                                     <div className="text-sm text-gray-500 mb-2">
-                                        {isFlipped ? 'Lithuanian' : 'English'}
+                                        {isFlipped ? 'Lietuviškai' : 'Angliškai'}
                                     </div>
                                     <div className="text-3xl font-bold text-gray-800">
                                         {isFlipped ? currentWord.lithuanian : currentWord.english}
                                     </div>
                                     <div className="text-sm text-gray-400 mt-4">
-                                        Click to flip
+                                        Spauskite, kad apversti
                                     </div>
                                 </div>
                             </div>
@@ -462,13 +720,13 @@
                                     onClick={handleFlip}
                                     className="flex-1 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
                                 >
-                                    Flip Card
+                                    Apversti kortelę
                                 </button>
                                 <button
                                     onClick={handleNext}
                                     className="flex-1 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
                                 >
-                                    Next Card →
+                                    Kita kortelė →
                                 </button>
                             </div>
                         </div>
@@ -488,16 +746,16 @@
                                     onClick={() => setMode('menu')}
                                     className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
                                 >
-                                    ← Back to Menu
+                                    ← Grįžti į meniu
                                 </button>
                                 <div className="text-gray-700 font-medium">
-                                    Question {currentIndex + 1} / {shuffledVocab.length}
+                                    Klausimas {currentIndex + 1} / {shuffledVocab.length}
                                 </div>
                             </div>
 
                             <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
                                 <div className="text-center mb-8">
-                                    <div className="text-sm text-gray-500 mb-2">Translate to Lithuanian:</div>
+                                    <div className="text-sm text-gray-500 mb-2">Išverskite į lietuvių kalbą:</div>
                                     <div className="text-3xl font-bold text-gray-800">
                                         {currentWord.english}
                                     </div>
@@ -528,13 +786,13 @@
                                             ? 'bg-green-100 text-green-800' 
                                             : 'bg-red-100 text-red-800'
                                     }`}>
-                                        {feedback === 'correct' ? '✓ Correct!' : `✗ Incorrect. The answer is: ${currentWord.lithuanian}`}
+                                        {feedback === 'correct' ? '✓ Teisingai!' : `✗ Neteisingai. Teisingas atsakymas: ${currentWord.lithuanian}`}
                                     </div>
                                 )}
                             </div>
 
                             <div className="bg-white rounded-lg shadow p-4 text-center">
-                                <div className="text-sm text-gray-600">Score:</div>
+                                <div className="text-sm text-gray-600">Rezultatas:</div>
                                 <div className="text-2xl font-bold text-gray-800">
                                     {score.correct} / {score.total}
                                 </div>
@@ -556,16 +814,16 @@
                                     onClick={() => setMode('menu')}
                                     className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
                                 >
-                                    ← Back to Menu
+                                    ← Grįžti į meniu
                                 </button>
                                 <div className="text-gray-700 font-medium">
-                                    Question {currentIndex + 1} / {shuffledVocab.length}
+                                    Klausimas {currentIndex + 1} / {shuffledVocab.length}
                                 </div>
                             </div>
 
                             <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
                                 <div className="text-center mb-8">
-                                    <div className="text-sm text-gray-500 mb-2">Type in Lithuanian:</div>
+                                    <div className="text-sm text-gray-500 mb-2">Įrašykite lietuviškai:</div>
                                     <div className="text-3xl font-bold text-gray-800 mb-6">
                                         {currentWord.english}
                                     </div>
@@ -575,7 +833,7 @@
                                         value={userAnswer}
                                         onChange={(e) => setUserAnswer(e.target.value)}
                                         onKeyPress={(e) => e.key === 'Enter' && userAnswer && checkAnswer()}
-                                        placeholder="Type your answer..."
+                                        placeholder="Įrašykite atsakymą..."
                                         disabled={feedback !== ''}
                                         className="w-full p-4 text-xl border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
                                         autoFocus
@@ -587,7 +845,7 @@
                                     disabled={!userAnswer || feedback !== ''}
                                     className="w-full px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    Check Answer
+                                    Tikrinti atsakymą
                                 </button>
 
                                 {feedback && (
@@ -597,14 +855,14 @@
                                             : 'bg-red-100 text-red-800'
                                     }`}>
                                         {feedback === 'correct' 
-                                            ? '✓ Correct!' 
-                                            : `✗ Incorrect. The correct answer is: ${currentWord.lithuanian}`}
+                                            ? '✓ Teisingai!' 
+                                            : `✗ Neteisingai. Teisingas atsakymas: ${currentWord.lithuanian}`}
                                     </div>
                                 )}
                             </div>
 
                             <div className="bg-white rounded-lg shadow p-4 text-center">
-                                <div className="text-sm text-gray-600">Score:</div>
+                                <div className="text-sm text-gray-600">Rezultatas:</div>
                                 <div className="text-2xl font-bold text-gray-800">
                                     {score.correct} / {score.total}
                                 </div>
