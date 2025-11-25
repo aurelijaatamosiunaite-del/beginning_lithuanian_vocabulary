@@ -1017,7 +1017,7 @@ const sentenceData = {
         setFeedback('');
     }, [currentUnit, mode]);
 
-    if (shuffledSentences.length === 0) return null;
+   if (!currentSentences || currentSentences.length === 0) return null;
     const currentSentence = shuffledSentences[sentenceIndex];
 
     const handleAnswer = (selectedOption) => {
