@@ -1003,6 +1003,9 @@ const sentenceData = {
 
           const SentenceCompletionMode = () => {
     const currentSentences = sentenceData[currentUnit];
+              console.log('currentUnit:', currentUnit);
+    console.log('currentSentences:', currentSentences);
+    console.log('sentenceData:', sentenceData);
     const [shuffledSentences, setShuffledSentences] = useState([]);
     const [sentenceIndex, setSentenceIndex] = useState(0);
 
