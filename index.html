@@ -542,6 +542,7 @@
 
         function App() {
             const [currentUnit, setCurrentUnit] = useState('unit1');
+            const [direction, setDirection] = useState('en-lt'); // NEW: direction state
             const [mode, setMode] = useState('menu');
             const [currentIndex, setCurrentIndex] = useState(0);
             const [isFlipped, setIsFlipped] = useState(false);
@@ -558,7 +559,7 @@
                 setShuffledVocab(shuffled);
                 setCurrentIndex(0);
                 setScore({ correct: 0, total: 0 });
-            }, [currentUnit, mode]);
+            }, [currentUnit, mode, direction]); // Added direction to dependencies
 
             useEffect(() => {
                 if (mode === 'multipleChoice' && shuffledVocab.length > 0) {
@@ -592,7 +593,7 @@
             const checkAnswer = () => {
                 const currentWord = shuffledVocab[currentIndex];
                 const normalizedAnswer = userAnswer.toLowerCase().trim();
-                const normalizedCorrect = currentWord.lithuanian.toLowerCase().trim();
+                const normalizedCorrect = (direction === 'en-lt' ? currentWord.lithuanian : currentWord.english).toLowerCase().trim();
 
                 if (normalizedAnswer === normalizedCorrect) {
                     setFeedback('correct');
@@ -609,7 +610,11 @@
 
             const handleMultipleChoice = (selectedWord) => {
                 const currentWord = shuffledVocab[currentIndex];
-                if (selectedWord.lithuanian === currentWord.lithuanian) {
+                const isCorrect = direction === 'en-lt'
+                    ? selectedWord.lithuanian === currentWord.lithuanian
+                    : selectedWord.english === currentWord.english;
+
+                if (isCorrect) {
                     setFeedback('correct');
                     setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
                 } else {
@@ -629,6 +634,35 @@
                             Žodyno pratybos
                         </h1>
                         <p className="text-gray-600 text-center mb-8">1-4 pamokos</p>
+
+                        {/* NEW: Direction Selection */}
+                        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Pasirinkite kryptį / Choose direction</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button
+                                    onClick={() => setDirection('en-lt')}
+                                    className={`p-4 rounded-lg border-2 transition-all ${
+                                        direction === 'en-lt'
+                                            ? 'border-blue-500 bg-blue-50'
+                                            : 'border-gray-200 hover:border-blue-300'
+                                    }`}
+                                >
+                                    <div className="font-semibold text-lg">English → Lietuvių</div>
+                                    <div className="text-sm text-gray-600 mt-1">Išversti į lietuvių kalbą</div>
+                                </button>
+                                <button
+                                    onClick={() => setDirection('lt-en')}
+                                    className={`p-4 rounded-lg border-2 transition-all ${
+                                        direction === 'lt-en'
+                                            ? 'border-blue-500 bg-blue-50'
+                                            : 'border-gray-200 hover:border-blue-300'
+                                    }`}
+                                >
+                                    <div className="font-semibold text-lg">Lietuvių → English</div>
+                                    <div className="text-sm text-gray-600 mt-1">Translate to English</div>
+                                </button>
+                            </div>
+                        </div>
 
                         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                             <h2 className="text-xl font-semibold mb-4 text-gray-800">Pasirinkite pamoką</h2>
@@ -682,6 +716,11 @@
                 const currentWord = shuffledVocab[currentIndex];
                 if (!currentWord) return null;
 
+                const frontText = direction === 'en-lt' ? currentWord.english : currentWord.lithuanian;
+                const backText = direction === 'en-lt' ? currentWord.lithuanian : currentWord.english;
+                const frontLabel = direction === 'en-lt' ? 'Angliškai' : 'Lietuviškai';
+                const backLabel = direction === 'en-lt' ? 'Lietuviškai' : 'Angliškai';
+
                 return (
                     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
                         <div className="max-w-2xl mx-auto">
@@ -701,10 +740,10 @@
                                  onClick={handleFlip}>
                                 <div className="text-center">
                                     <div className="text-sm text-gray-500 mb-2">
-                                        {isFlipped ? 'Lietuviškai' : 'Angliškai'}
+                                        {isFlipped ? backLabel : frontLabel}
                                     </div>
                                     <div className="text-3xl font-bold text-gray-800">
-                                        {isFlipped ? currentWord.lithuanian : currentWord.english}
+                                        {isFlipped ? backText : frontText}
                                     </div>
                                     <div className="text-sm text-gray-400 mt-4">
                                         Spauskite, kad apverstumėte kortelę
@@ -735,6 +774,10 @@
                 const currentWord = shuffledVocab[currentIndex];
                 if (!currentWord || multipleChoiceOptions.length === 0) return null;
 
+                const promptText = direction === 'en-lt' ? currentWord.english : currentWord.lithuanian;
+                const promptLabel = direction === 'en-lt' ? 'Išverskite į lietuvių kalbą:' : 'Translate to English:';
+                const correctAnswer = direction === 'en-lt' ? currentWord.lithuanian : currentWord.english;
+
                 return (
                     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-6">
                         <div className="max-w-2xl mx-auto">
@@ -752,29 +795,36 @@
 
                             <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
                                 <div className="text-center mb-8">
-                                    <div className="text-sm text-gray-500 mb-2">Išverskite į lietuvių kalbą:</div>
+                                    <div className="text-sm text-gray-500 mb-2">{promptLabel}</div>
                                     <div className="text-3xl font-bold text-gray-800">
-                                        {currentWord.english}
+                                        {promptText}
                                     </div>
                                 </div>
 
                                 <div className="space-y-3">
-                                    {multipleChoiceOptions.map((option, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => handleMultipleChoice(option)}
-                                            disabled={feedback !== ''}
-                                            className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
-                                                feedback === '' 
-                                                    ? 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
-                                                    : option.lithuanian === currentWord.lithuanian
-                                                    ? 'border-green-500 bg-green-50'
-                                                    : 'border-gray-300 opacity-50'
-                                            }`}
-                                        >
-                                            {option.lithuanian}
-                                        </button>
-                                    ))}
+                                    {multipleChoiceOptions.map((option, idx) => {
+                                        const optionText = direction === 'en-lt' ? option.lithuanian : option.english;
+                                        const isCorrectOption = direction === 'en-lt'
+                                            ? option.lithuanian === currentWord.lithuanian
+                                            : option.english === currentWord.english;
+
+                                        return (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleMultipleChoice(option)}
+                                                disabled={feedback !== ''}
+                                                className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
+                                                    feedback === '' 
+                                                        ? 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
+                                                        : isCorrectOption
+                                                        ? 'border-green-500 bg-green-50'
+                                                        : 'border-gray-300 opacity-50'
+                                                }`}
+                                            >
+                                                {optionText}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
 
                                 {feedback && (
@@ -783,7 +833,7 @@
                                             ? 'bg-green-100 text-green-800' 
                                             : 'bg-red-100 text-red-800'
                                     }`}>
-                                        {feedback === 'correct' ? '✓ Teisingai!' : `✗ Neteisingai. Teisingas atsakymas: ${currentWord.lithuanian}`}
+                                        {feedback === 'correct' ? '✓ Teisingai!' : `✗ Neteisingai. Teisingas atsakymas: ${correctAnswer}`}
                                     </div>
                                 )}
                             </div>
@@ -803,6 +853,10 @@
                 const currentWord = shuffledVocab[currentIndex];
                 if (!currentWord) return null;
 
+                const promptText = direction === 'en-lt' ? currentWord.english : currentWord.lithuanian;
+                const promptLabel = direction === 'en-lt' ? 'Įrašykite lietuviškai:' : 'Type in English:';
+                const correctAnswer = direction === 'en-lt' ? currentWord.lithuanian : currentWord.english;
+
                 return (
                     <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 p-6">
                         <div className="max-w-2xl mx-auto">
@@ -820,9 +874,9 @@
 
                             <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
                                 <div className="text-center mb-8">
-                                    <div className="text-sm text-gray-500 mb-2">Įrašykite lietuviškai:</div>
+                                    <div className="text-sm text-gray-500 mb-2">{promptLabel}</div>
                                     <div className="text-3xl font-bold text-gray-800 mb-6">
-                                        {currentWord.english}
+                                        {promptText}
                                     </div>
 
                                     <input
@@ -853,7 +907,7 @@
                                     }`}>
                                         {feedback === 'correct' 
                                             ? '✓ Teisingai!' 
-                                            : `✗ Neteisingai. Teisingas atsakymas: ${currentWord.lithuanian}`}
+                                            : `✗ Neteisingai. Teisingas atsakymas: ${correctAnswer}`}
                                     </div>
                                 )}
                             </div>
