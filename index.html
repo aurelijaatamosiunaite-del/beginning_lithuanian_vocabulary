@@ -540,6 +540,77 @@
             ]
         };
 
+const sentenceData = {
+    unit1: [
+        { sentence: "Labas! Aš esu _____ iš Mainco universiteto.", correct: "studentas", options: ["studentas", "draugas", "numeris", "namas"] },
+        { sentence: "_____ sekasi? – Labai gerai, ačiū!", correct: "Kaip", options: ["Kaip", "Kas", "Koks", "Ar"] },
+        { sentence: "Čia yra mano _____. Ji studentė iš Lietuvos.", correct: "draugė", options: ["draugė", "diena", "vardas", "gatvė"] },
+        { sentence: "Aš esu iš Vokietijos. Aš esu _____.", correct: "vokietis", options: ["vokietis", "rusas", "anglas", "suomis"] },
+        { sentence: "Viso gero! Iki _____!", correct: "pasimatymo", options: ["pasimatymo", "vakaras", "rytas", "diena"] },
+        { sentence: "Koks tavo telefono _____?", correct: "numeris", options: ["numeris", "pavardė", "bankas", "vardas"] },
+        { sentence: "Aš šiek tiek _____ lietuviškai.", correct: "kalbu", options: ["kalbu", "esu", "yra", "supranta"] },
+        { sentence: "_____, aš nesuprantu lenkiškai.", correct: "Atsiprašau", options: ["Atsiprašau", "Ačiū", "Labas", "Sudie"] },
+        { sentence: "Mano draugas yra _____. Jis iš Prancūzijos.", correct: "prancūzas", options: ["prancūzas", "anglas", "rusas", "italas"] },
+        { sentence: "Mano draugė gerai kalba _________.", correct: "ispaniškai", options: ["ispaniškai", "italė", "iš Vokietijos", "iš Italijos"] },
+        { sentence: "_____ tu? – Aš esu iš Lenkijos.", correct: "Iš kur", options: ["Iš kur", "Kaip", "Koks", "Kokia"] },
+        { sentence: "Vienas, du, trys, keturi, _____.", correct: "penki", options: ["penki", "šeši", "septyni", "aštuoni"] },
+        { sentence: "Labas rytas, aš esu Vytautas! _____________ susipažinti!", correct: "malonu", options: ["malonu", "ačiū", "viso", "iki"] }
+    ],
+    unit2: [
+        { sentence: "Kur yra _____? Aš noriu kavos.", correct: "kavinė", options: ["kavinė", "biblioteka", "mokykla", "ligoninė"] },
+        { sentence: "_____ mes einame į kiną? – Penktadienį.", correct: "Kada", options: ["Kada", "Kur", "Kas", "Kaip"] },
+        { sentence: "Eik _____, tada pasuk į kairę.", correct: "tiesiai", options: ["tiesiai", "iki", "dabar", "prie"] },
+        { sentence: "Universitetas yra _____ parko.", correct: "prie", options: ["prie", "iki", "tiesiai", "iš"] },
+        { sentence: "Mes susitinkame centre prie _____.", correct: "fontano", options: ["fontano", "vasaros", "žiemos", "pirmadienio"] },
+        { sentence: "Šiandien yra _____. Rytoj bus ketvirtadienis.", correct: "trečiadienis", options: ["trečiadienis", "pirmadienis", "penktadienis", "sekmadienis"] },
+        { sentence: "Kur yra autobusų _____? Aš noriu važiuoti į Kauną.", correct: "stotis", options: ["stotis", "kioskas", "klubas", "baseinas"] },
+        { sentence: "Atsiprašau, _____ galite pakartoti?", correct: "gal", options: ["gal", "dabar", "tada", "kur"] },
+        { sentence: "Aš _____ Maince ir studijuoju universitete.", correct: "gyvenu", options: ["gyvenu", "einu", "važiuoju", "skubu"] },
+        { sentence: "_____ yra biblioteka? – Ten, dešinėje.", correct: "Kur", options: ["Kur", "Kada", "Kaip", "Kas"] },
+        { sentence: "Aš _____ į universitetą kasdien.", correct: "einu", options: ["einu", "gyvenu", "stoviu", "dirbu"] },
+        { sentence: "Muziejus yra _____ rotušės.", correct: "už", options: ["už", "iki", "į", "pas"] },
+        { sentence: "_____ važiuojame į Frankfurtą? – Antradienį.", correct: "Kada", options: ["Kada", "Kur", "Kaip", "Koks"] },
+        { sentence: "Atsiprašau, kaip _______ į centrą?", correct: "nuvažiuoti", options: ["nuvažiuoti", "dirbti", "gyventi", "skubėti"] }
+    ],
+    unit3: [
+        { sentence: "Rytą aš valgau _____ su sviestu.", correct: "duoną", options: ["duoną", "druską", "cukrų", "pieną"] },
+        { sentence: "Aš labai mėgstu _____. Jie saldūs ir raudoni.", correct: "pomidorus", options: ["pomidorus", "agurkus", "citrinas", "cukrų"] },
+        { sentence: "Ar tu _____ kavą ar arbatą?", correct: "geri", options: ["geri", "valgai", "pietauji", "vakarieniauji"] },
+        { sentence: "Kiek _____ baltas sūris?", correct: "kainuoja", options: ["kainuoja", "ragauja", "gamina", "pietauja"] },
+        { sentence: "Aš esu _____. Aš nevalgau mėsos.", correct: "vegetaras", options: ["vegetaras", "alkanas", "brangus", "saldus"] },
+        { sentence: "Man patinka šis maistas. Jis labai _____!", correct: "skanus", options: ["skanus", "didelis", "brangus", "rūgštus"] },
+        { sentence: "Norėčiau kavos ___________.", correct: "išsinešti", options: ["išsinešti", "valgyti", "važiuoti", "gaminti"] },
+        { sentence: "Ar galiu mokėti _____? Neturiu grynųjų pinigų.", correct: "kortele", options: ["kortele", "pienu", "druska", "vandeniu"] },
+        { sentence: "Lietuviai _____ mėgsta bulves.", correct: "labai", options: ["labai", "retai", "niekada", "saldžiai"] },
+        { sentence: "Aš pusryčiauju _____.", correct: "rytą", options: ["rytą", "vakarą", "naktį", "vakare"] },
+        { sentence: "Ar tu mėgsti _____? – Taip, labai skanūs!", correct: "obuolius", options: ["obuolius", "druską", "pieną", "vandenį"] },
+        { sentence: "Šis maistas per _____. Norėčiau vandens.", correct: "sūrus", options: ["sūrus", "saldus", "skanus", "pigus"] },
+        { sentence: "Vakarienę aš _____ šeštą valandą.", correct: "gaminu", options: ["gaminu", "gyvenu", "dirbu", "skubu"] },
+        { sentence: "Ar turite _____? Aš mėgstu daržoves.", correct: "salotų", options: ["salotų", "ledų", "alaus", "kavos"] },
+        { sentence: "Šiandien pietums valgau _____ su bulvėmis.", correct: "mėsą", options: ["mėsą", "cukrų", "druską", "pieną"] },
+        { sentence: "Norėčiau _____. Noriu gerti.", correct: "vandens", options: ["vandens", "duonos", "sūrio", "mėsos"] }
+    ],
+    unit4: [
+        { sentence: "Mano teta ištekėjusi. Jos vyras yra mano _____.", correct: "dėdė", options: ["dėdė", "tėtis", "brolis", "pusbrolis"] },
+        { sentence: "Mano mamos mama yra mano _____.", correct: "močiutė", options: ["močiutė", "teta", "sesuo", "pusseserė"] },
+        { sentence: "Ar tu _____ šunį ar katę?", correct: "turi", options: ["turi", "esi", "gyveni", "dirbi"] },
+        { sentence: "Jono sesuo yra _____. Ji dirba teatre.", correct: "aktorė", options: ["aktorė", "inžinierė", "vertėja", "ūkininkė"] },
+        { sentence: "Marijos vyras _____ ligoninėje. Jis yra gydytojas.", correct: "dirba", options: ["dirba", "gyvena", "gamina", "valgau"] },
+        { sentence: "Šeštadienį mes _____ pas senelį.", correct: "važiuojame", options: ["važiuojame", "stovime", "sėdime", "gyvename"] },
+        { sentence: "Pauliaus brolis _____. Jo žmonos vardas Julija", correct: "vedęs", options: ["vedęs", "tylus", "liūdnas", "nuobodus"] },
+        { sentence: "Mano pusbrolis _____ Vokietijoje.", correct: "gyvena", options: ["gyvena", "esu", "turi", "važiuoja"] },
+        { sentence: "Ievos mama yra _____. Ji dirba mokykloje.", correct: "mokytoja", options: ["mokytoja", "odontologė", "vertėja", "aktorė"] },
+        { sentence: "Vytauto tėvas yra _____. Jis koduoja kompiuteriu.", correct: "programuotojas", options: ["programuotojas", "gydytojas", "mokytojas", "ūkininkas"] },
+        { sentence: "Mano _____ dar mažas. Jam tik 3 metai.", correct: "brolis", options: ["brolis", "dėdė", "senelis", "tėvas"] },
+        { sentence: "Ar tavo sesuo _____? – Taip, jos vyras Patrikas, iš Australijos.", correct: "ištekėjusi", options: ["ištekėjusi", "vedęs", "jauna", "linksma"] },
+        { sentence: "Erikos _____ yra kirpėja. Ji dirba salone.", correct: "teta", options: ["teta", "dėdė", "brolis", "senelis"] },
+        { sentence: "Mano senelis jau _____. Jam 85 metai.", correct: "senas", options: ["senas", "jaunas", "vedęs", "protingas"] },
+        { sentence: "Mūsų _____ didelė: turime tris vaikus ir šunį.", correct: "šeima", options: ["šeima", "grupė", "mama", "brolis"] },
+        { sentence: "Povilo dukra nori būti _____. Ji mėgsta dainuoti.", correct: "muzikantė", options: ["muzikantė", "gydytoja", "mokytoja", "advokatė"] },
+        { sentence: "Ar tu _____ seserį ar brolį? – Turiu seserį.", correct: "turi", options: ["turi", "esi", "gyveni", "myli"] }
+    ]
+};  
+        
         function App() {
             const [currentUnit, setCurrentUnit] = useState('unit1');
             const [direction, setDirection] = useState('en-lt'); // NEW: direction state
@@ -706,6 +777,13 @@
                                 >
                                     <div className="font-semibold">⌨️ Įrašykite atsakymą</div>
                                 </button>
+                                <button
+    onClick={() => setMode('sentenceCompletion')}
+    className="w-full p-4 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors text-left"
+>
+    <div className="font-semibold">✍️ Užbaikite sakinius</div>
+</button>
+
                             </div>
                         </div>
                     </div>
@@ -923,12 +1001,114 @@
                 );
             };
 
+          const SentenceCompletionMode = () => {
+    const currentSentences = sentenceData[currentUnit];
+    const [shuffledSentences, setShuffledSentences] = useState([]);
+    const [sentenceIndex, setSentenceIndex] = useState(0);
+
+    useEffect(() => {
+        const shuffled = [...currentSentences].sort(() => Math.random() - 0.5);
+        setShuffledSentences(shuffled);
+        setSentenceIndex(0);
+        setScore({ correct: 0, total: 0 });
+        setFeedback('');
+    }, [currentUnit]);
+
+    if (shuffledSentences.length === 0) return null;
+    const currentSentence = shuffledSentences[sentenceIndex];
+
+    const handleAnswer = (selectedOption) => {
+        if (selectedOption === currentSentence.correct) {
+            setFeedback('correct');
+            setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
+        } else {
+            setFeedback('incorrect');
+            setScore({ ...score, total: score.total + 1 });
+        }
+
+        setTimeout(() => {
+            if (sentenceIndex < shuffledSentences.length - 1) {
+                setSentenceIndex(sentenceIndex + 1);
+                setFeedback('');
+            } else {
+                setMode('menu');
+            }
+        }, 1500);
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 p-6">
+            <div className="max-w-2xl mx-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <button
+                        onClick={() => setMode('menu')}
+                        className="px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                    >
+                        ← Grįžti į meniu
+                    </button>
+                    <div className="text-gray-700 font-medium">
+                        Sakinys {sentenceIndex + 1} / {shuffledSentences.length}
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
+                    <div className="text-center mb-8">
+                        <div className="text-sm text-gray-500 mb-4">Užbaikite sakinį:</div>
+                        <div className="text-2xl font-bold text-gray-800 mb-6">
+                            {currentSentence.sentence}
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        {currentSentence.options.map((option, idx) => {
+                            const isCorrect = option === currentSentence.correct;
+                            return (
+                                <button
+                                    key={idx}
+                                    onClick={() => handleAnswer(option)}
+                                    disabled={feedback !== ''}
+                                    className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
+                                        feedback === ''
+                                            ? 'border-gray-300 hover:border-orange-400 hover:bg-orange-50'
+                                            : isCorrect
+                                            ? 'border-green-500 bg-green-50'
+                                            : 'border-gray-300 opacity-50'
+                                    }`}
+                                >
+                                    {option}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {feedback && (
+                        <div className={`mt-6 p-4 rounded-lg text-center font-semibold ${
+                            feedback === 'correct'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-red-100 text-red-800'
+                        }`}>
+                            {feedback === 'correct' ? '✓ Teisingai!' : `✗ Neteisingai. Teisingas atsakymas: ${currentSentence.correct}`}
+                        </div>
+                    )}
+                </div>
+
+                <div className="bg-white rounded-lg shadow p-4 text-center">
+                    <div className="text-sm text-gray-600">Rezultatas:</div>
+                    <div className="text-2xl font-bold text-gray-800">
+                        {score.correct} / {score.total}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};  
             return (
                 <>
                     {mode === 'menu' && <MenuScreen />}
                     {mode === 'flashcards' && <FlashcardsMode />}
                     {mode === 'multipleChoice' && <MultipleChoiceMode />}
                     {mode === 'typing' && <TypingMode />}
+                {mode === 'sentenceCompletion' && <SentenceCompletionMode />}
                 </>
             );
         }
