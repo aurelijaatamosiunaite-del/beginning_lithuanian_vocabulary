@@ -1001,23 +1001,22 @@ const sentenceData = {
                 );
             };
 
-          const SentenceCompletionMode = () => {
+   const SentenceCompletionMode = () => {
     const currentSentences = sentenceData[currentUnit];
-              console.log('currentUnit:', currentUnit);
-    console.log('currentSentences:', currentSentences);
-    console.log('sentenceData:', sentenceData);
     const [shuffledSentences, setShuffledSentences] = useState([]);
     const [sentenceIndex, setSentenceIndex] = useState(0);
 
     useEffect(() => {
-        const shuffled = [...currentSentences].sort(() => Math.random() - 0.5);
-        setShuffledSentences(shuffled);
-        setSentenceIndex(0);
-        setScore({ correct: 0, total: 0 });
-        setFeedback('');
+        if (currentSentences && currentSentences.length > 0) {
+            const shuffled = [...currentSentences].sort(() => Math.random() - 0.5);
+            setShuffledSentences(shuffled);
+            setSentenceIndex(0);
+            setScore({ correct: 0, total: 0 });
+            setFeedback('');
+        }
     }, [currentUnit, mode]);
 
-   if (!currentSentences || currentSentences.length === 0) return null;
+    if (shuffledSentences.length === 0) return null;
     const currentSentence = shuffledSentences[sentenceIndex];
 
     const handleAnswer = (selectedOption) => {
@@ -1104,7 +1103,7 @@ const sentenceData = {
             </div>
         </div>
     );
-};  
+}; 
             return (
                 <>
                     {mode === 'menu' && <MenuScreen />}
