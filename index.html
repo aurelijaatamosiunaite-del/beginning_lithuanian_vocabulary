@@ -1017,7 +1017,7 @@ const sentenceData = {
             setFeedback('');
         }
     }, [currentUnit, mode]);
-
+console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
    if (shuffledSentences.length === 0) {
     return <div className="min-h-screen flex items-center justify-center">
         <div className="text-xl text-gray-600">Kraunama...</div>
