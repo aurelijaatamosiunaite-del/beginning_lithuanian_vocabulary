@@ -1014,9 +1014,14 @@ const [selectedOption, setSelectedOption] = useState(null);
             console.log('About to set shuffled sentences:', shuffled.length);
             setShuffledSentences(shuffled);
             setSentenceIndex(0);
-          
         }
     }, [currentUnit, mode]);
+       useEffect(() => {
+    setSelectedOption(null);
+    setFeedback('');
+}, [sentenceIndex]);
+
+console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
 console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
    if (shuffledSentences.length === 0) {
     return <div className="min-h-screen flex items-center justify-center">
