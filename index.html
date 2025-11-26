@@ -1026,7 +1026,7 @@ const currentSentence = shuffledSentences[sentenceIndex];
 
    const [selectedOption, setSelectedOption] = useState(null);  
 const handleAnswer = (option) => {
-    setSelectedOption(option);  // Store which option was clicked
+    setSelectedOption(option); 
     
     if (option === currentSentence.correct) {
         setFeedback('correct');
@@ -1038,12 +1038,14 @@ const handleAnswer = (option) => {
 
     setTimeout(() => {
         setFeedback('');
-        setSelectedOption(null);  // Clear the selected option
+        setSelectedOption(null);  
+        setTimeout(() => {
         if (sentenceIndex < shuffledSentences.length - 1) {
             setSentenceIndex(sentenceIndex + 1);
         } else {
             setMode('menu');
         }
+            }, 50);
     }, 1500);
 };    
     return (
