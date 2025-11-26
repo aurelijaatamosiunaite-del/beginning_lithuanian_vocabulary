@@ -1005,7 +1005,8 @@ const sentenceData = {
     const currentSentences = sentenceData[currentUnit];
     const [shuffledSentences, setShuffledSentences] = useState([]);
     const [sentenceIndex, setSentenceIndex] = useState(0);
-
+const [selectedOption, setSelectedOption] = useState(null); 
+       
     useEffect(() => {
         console.log('useEffect running! currentSentences:', currentSentences);
         if (currentSentences && currentSentences.length > 0) {
@@ -1022,9 +1023,7 @@ console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
         <div className="text-xl text-gray-600">Kraunama...</div>
     </div>;
 }
-const currentSentence = shuffledSentences[sentenceIndex];
-
-   const [selectedOption, setSelectedOption] = useState(null);  
+const currentSentence = shuffledSentences[sentenceIndex]; 
 const handleAnswer = (option) => {
     setSelectedOption(option); 
     
