@@ -1010,6 +1010,7 @@ const sentenceData = {
         console.log('useEffect running! currentSentences:', currentSentences);
         if (currentSentences && currentSentences.length > 0) {
             const shuffled = [...currentSentences].sort(() => Math.random() - 0.5);
+            console.log('About to set shuffled sentences:', shuffled.length);
             setShuffledSentences(shuffled);
             setSentenceIndex(0);
             setScore({ correct: 0, total: 0 });
