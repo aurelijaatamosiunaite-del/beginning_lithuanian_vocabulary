@@ -1013,9 +1013,9 @@ const sentenceData = {
             console.log('About to set shuffled sentences:', shuffled.length);
             setShuffledSentences(shuffled);
             setSentenceIndex(0);
-          
+          setFeedback('');
         }
-    }, [currentUnit, mode]);
+    }, [currentUnit, mode, sentenceIndex]);
 console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
    if (shuffledSentences.length === 0) {
     return <div className="min-h-screen flex items-center justify-center">
@@ -1034,16 +1034,14 @@ const currentSentence = shuffledSentences[sentenceIndex];
         }
 
         setTimeout(() => {
-            if (sentenceIndex < shuffledSentences.length - 1) {
-                setFeedback('');
-                setSentenceIndex(sentenceIndex + 1);
-                
-            } else {
-                setMode('menu');
-            }
-        }, 1500);
-    };
-
+    if (sentenceIndex < shuffledSentences.length - 1) {
+        setSentenceIndex(sentenceIndex + 1);
+        setFeedback('');
+    } else {
+        setMode('menu');
+    }
+}, 1500);
+        
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 p-6">
             <div className="max-w-2xl mx-auto">
