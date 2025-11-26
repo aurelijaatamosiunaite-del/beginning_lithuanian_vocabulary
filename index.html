@@ -1035,8 +1035,9 @@ const currentSentence = shuffledSentences[sentenceIndex];
 
         setTimeout(() => {
             if (sentenceIndex < shuffledSentences.length - 1) {
-                setSentenceIndex(sentenceIndex + 1);
                 setFeedback('');
+                setSentenceIndex(sentenceIndex + 1);
+                
             } else {
                 setMode('menu');
             }
