@@ -1034,11 +1034,15 @@ const currentSentence = shuffledSentences[sentenceIndex];
         }
 
         setTimeout(() => {
+    setFeedback('');  
     if (sentenceIndex < shuffledSentences.length - 1) {
-        setSentenceIndex(sentenceIndex + 1);
-        setFeedback('');
+        setTimeout(() => {
+            setSentenceIndex(prev => prev + 1);  
+        }, 100);
     } else {
-        setMode('menu');
+        setTimeout(() => {
+            setMode('menu');
+        }, 100);
     }
 }, 1500);
    };     
