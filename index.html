@@ -1024,28 +1024,28 @@ console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
 }
 const currentSentence = shuffledSentences[sentenceIndex];
 
-    const handleAnswer = (selectedOption) => {
-        if (selectedOption === currentSentence.correct) {
-            setFeedback('correct');
-            setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
-        } else {
-            setFeedback('incorrect');
-            setScore({ ...score, total: score.total + 1 });
-        }
-
-        setTimeout(() => {
-    setFeedback('');  
-    if (sentenceIndex < shuffledSentences.length - 1) {
-        setTimeout(() => {
-            setSentenceIndex(prev => prev + 1);  
-        }, 100);
+   const [selectedOption, setSelectedOption] = useState(null);  
+const handleAnswer = (option) => {
+    setSelectedOption(option);  // Store which option was clicked
+    
+    if (option === currentSentence.correct) {
+        setFeedback('correct');
+        setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
     } else {
-        setTimeout(() => {
-            setMode('menu');
-        }, 100);
+        setFeedback('incorrect');
+        setScore({ ...score, total: score.total + 1 });
     }
-}, 1500);
-   };     
+
+    setTimeout(() => {
+        setFeedback('');
+        setSelectedOption(null);  // Clear the selected option
+        if (sentenceIndex < shuffledSentences.length - 1) {
+            setSentenceIndex(sentenceIndex + 1);
+        } else {
+            setMode('menu');
+        }
+    }, 1500);
+};    
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 p-6">
             <div className="max-w-2xl mx-auto">
@@ -1078,12 +1078,16 @@ const currentSentence = shuffledSentences[sentenceIndex];
                                     onClick={() => handleAnswer(option)}
                                     disabled={feedback !== ''}
                                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
-                                        feedback === ''
-                                            ? 'border-gray-300 hover:border-orange-400 hover:bg-orange-50'
-                                            : isCorrect
-                                            ? 'border-green-500 bg-green-50'
-                                            : 'border-gray-300 opacity-50'
-                                    }`}
+    feedback === ''
+        ? 'border-gray-300 hover:border-orange-400 hover:bg-orange-50'
+        : option === selectedOption && feedback === 'correct'
+        ? 'border-green-500 bg-green-50'
+        : option === selectedOption && feedback === 'incorrect'
+        ? 'border-red-500 bg-red-50'
+        : option === currentSentence.correct && feedback === 'incorrect'
+        ? 'border-green-500 bg-green-50'
+        : 'border-gray-300 opacity-50'
+}`}
                                 >
                                     {option}
                                 </button>
