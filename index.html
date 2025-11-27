@@ -615,6 +615,7 @@ const sentenceData = {
             const [currentUnit, setCurrentUnit] = useState('unit1');
             const [direction, setDirection] = useState('en-lt'); // NEW: direction state
             const [mode, setMode] = useState('menu');
+            const [lastMode, setLastMode] = useState(''); // Track the last active mode
             const [currentIndex, setCurrentIndex] = useState(0);
             const [isFlipped, setIsFlipped] = useState(false);
             const [userAnswer, setUserAnswer] = useState('');
@@ -622,21 +623,38 @@ const sentenceData = {
             const [score, setScore] = useState({ correct: 0, total: 0 });
             const [shuffledVocab, setShuffledVocab] = useState([]);
             const [multipleChoiceOptions, setMultipleChoiceOptions] = useState([]);
+            // NEW: Sentence completion state
+            const [shuffledSentences, setShuffledSentences] = useState([]);
+            const [sentenceOptions, setSentenceOptions] = useState([]);
+            const [selectedOption, setSelectedOption] = useState(null);
 
             const currentVocab = vocabularyData[currentUnit];
+            const currentSentences = sentenceData[currentUnit];
 
             useEffect(() => {
+                // Don't reset score when going to completion screen
+                if (mode === 'completed') return;
+                
                 const shuffled = [...currentVocab].sort(() => Math.random() - 0.5);
                 setShuffledVocab(shuffled);
                 setCurrentIndex(0);
                 setScore({ correct: 0, total: 0 });
-            }, [currentUnit, mode, direction]); // Added direction to dependencies
+                
+                // Initialize sentences for sentence completion mode
+                if (currentSentences && currentSentences.length > 0) {
+                    const shuffledSents = [...currentSentences].sort(() => Math.random() - 0.5);
+                    setShuffledSentences(shuffledSents);
+                }
+            }, [currentUnit, mode, direction]);
 
             useEffect(() => {
                 if (mode === 'multipleChoice' && shuffledVocab.length > 0) {
                     generateMultipleChoiceOptions();
                 }
-            }, [currentIndex, shuffledVocab, mode]);
+                if (mode === 'sentenceCompletion' && shuffledSentences.length > 0 && shuffledSentences[currentIndex]) {
+                    generateSentenceOptions();
+                }
+            }, [currentIndex, shuffledVocab, shuffledSentences, mode]);
 
             const generateMultipleChoiceOptions = () => {
                 const currentWord = shuffledVocab[currentIndex];
@@ -646,14 +664,40 @@ const sentenceData = {
                 setMultipleChoiceOptions(allOptions);
             };
 
+            const generateSentenceOptions = () => {
+                const currentSentence = shuffledSentences[currentIndex];
+                if (currentSentence && currentSentence.options) {
+                    const shuffledOpts = [...currentSentence.options].sort(() => Math.random() - 0.5);
+                    setSentenceOptions(shuffledOpts);
+                }
+            };
+
             const handleNext = () => {
-                if (currentIndex < shuffledVocab.length - 1) {
+                console.log('handleNext called');
+                console.log('currentIndex:', currentIndex);
+                console.log('shuffledVocab.length:', shuffledVocab.length);
+                console.log('shuffledSentences.length:', shuffledSentences.length);
+                console.log('mode:', mode);
+                
+                // Determine the correct length to check based on mode
+                const maxIndex = mode === 'sentenceCompletion' 
+                    ? shuffledSentences.length - 1 
+                    : shuffledVocab.length - 1;
+                
+                console.log('maxIndex:', maxIndex, 'currentIndex:', currentIndex);
+                
+                if (currentIndex < maxIndex) {
                     setCurrentIndex(currentIndex + 1);
                     setIsFlipped(false);
                     setUserAnswer('');
                     setFeedback('');
+                    setSelectedOption(null);
                 } else {
-                    setMode('menu');
+                    console.log('Task completed! Switching to completion screen');
+                    console.log('Current mode:', mode);
+                    setLastMode(mode); // Save current mode before switching to completed
+                    setMode('completed');
+                    console.log('Mode set to completed');
                 }
             };
 
@@ -667,6 +711,25 @@ const sentenceData = {
                 const normalizedCorrect = (direction === 'en-lt' ? currentWord.lithuanian : currentWord.english).toLowerCase().trim();
 
                 if (normalizedAnswer === normalizedCorrect) {
+                    setFeedback('correct');
+                    setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
+                } else {
+                    setFeedback('incorrect');
+                    setScore({ ...score, total: score.total + 1 });
+                }
+
+                setTimeout(() => {
+                    handleNext();
+                }, 1500);
+            };
+
+            const handleSentenceAnswer = (option) => {
+                if (feedback !== '') return; // Prevent multiple clicks
+                
+                const currentSentence = shuffledSentences[currentIndex];
+                setSelectedOption(option);
+                
+                if (option === currentSentence.correct) {
                     setFeedback('correct');
                     setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
                 } else {
@@ -1002,56 +1065,21 @@ const sentenceData = {
             };
 
    const SentenceCompletionMode = () => {
-    const currentSentences = sentenceData[currentUnit];
-    const [shuffledSentences, setShuffledSentences] = useState([]);
-    const [sentenceIndex, setSentenceIndex] = useState(0);
-const [selectedOption, setSelectedOption] = useState(null); 
-       
-    useEffect(() => {
-        console.log('useEffect running! currentSentences:', currentSentences);
-        if (currentSentences && currentSentences.length > 0) {
-            const shuffled = [...currentSentences].sort(() => Math.random() - 0.5);
-            console.log('About to set shuffled sentences:', shuffled.length);
-            setShuffledSentences(shuffled);
-            setSentenceIndex(0);
-        }
-    }, [currentUnit, mode]);
-       useEffect(() => {
-    setSelectedOption(null);
-    setFeedback('');
-}, [sentenceIndex]);
-
-console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
-console.log('Rendering! shuffledSentences.length:', shuffledSentences.length);
-   if (shuffledSentences.length === 0) {
-    return <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Kraunama...</div>
-    </div>;
-}
-const currentSentence = shuffledSentences[sentenceIndex]; 
-const handleAnswer = (option) => {
-    setSelectedOption(option); 
-    
-    if (option === currentSentence.correct) {
-        setFeedback('correct');
-        setScore({ ...score, correct: score.correct + 1, total: score.total + 1 });
-    } else {
-        setFeedback('incorrect');
-        setScore({ ...score, total: score.total + 1 });
+    if (shuffledSentences.length === 0 || sentenceOptions.length === 0) {
+        return <div className="min-h-screen flex items-center justify-center">
+            <div className="text-xl text-gray-600">Kraunama...</div>
+        </div>;
     }
-
-    setTimeout(() => {
-        setFeedback('');
-        setSelectedOption(null);  
-        setTimeout(() => {
-        if (sentenceIndex < shuffledSentences.length - 1) {
-            setSentenceIndex(sentenceIndex + 1);
-        } else {
-            setMode('menu');
-        }
-            }, 50);
-    }, 1500);
-};    
+    
+    const currentSentence = shuffledSentences[currentIndex];
+    if (!currentSentence) {
+        return <div className="min-h-screen flex items-center justify-center">
+            <div className="text-xl text-gray-600">Kraunama...</div>
+        </div>;
+    }
+    
+    const correctAnswer = currentSentence.correct;
+    
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 p-6">
             <div className="max-w-2xl mx-auto">
@@ -1063,7 +1091,7 @@ const handleAnswer = (option) => {
                         ← Grįžti į meniu
                     </button>
                     <div className="text-gray-700 font-medium">
-                        Sakinys {sentenceIndex + 1} / {shuffledSentences.length}
+                        Sakinys {currentIndex + 1} / {shuffledSentences.length}
                     </div>
                 </div>
 
@@ -1076,24 +1104,30 @@ const handleAnswer = (option) => {
                     </div>
 
                     <div className="space-y-3">
-                        {currentSentence.options.map((option, idx) => {
-                            const isCorrect = option === currentSentence.correct;
+                        {sentenceOptions.map((option, idx) => {
+                            const isSelected = selectedOption === option;
+                            const isCorrect = option === correctAnswer;
+                            
+                            let buttonClass = 'w-full p-4 rounded-lg border-2 text-left transition-all ';
+                            
+                            if (feedback === '') {
+                                buttonClass += 'border-gray-300 hover:border-orange-400 hover:bg-orange-50';
+                            } else if (isSelected && feedback === 'correct') {
+                                buttonClass += 'border-green-500 bg-green-50';
+                            } else if (isSelected && feedback === 'incorrect') {
+                                buttonClass += 'border-red-500 bg-red-50';
+                            } else if (!isSelected && isCorrect && feedback === 'incorrect') {
+                                buttonClass += 'border-green-500 bg-green-50';
+                            } else {
+                                buttonClass += 'border-gray-300 opacity-50';
+                            }
+
                             return (
                                 <button
                                     key={idx}
-                                    onClick={() => handleAnswer(option)}
+                                    onClick={() => handleSentenceAnswer(option)}
                                     disabled={feedback !== ''}
-                                    className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
-    feedback === ''
-        ? 'border-gray-300 hover:border-orange-400 hover:bg-orange-50'
-        : option === selectedOption && feedback === 'correct'
-        ? 'border-green-500 bg-green-50'
-        : option === selectedOption && feedback === 'incorrect'
-        ? 'border-red-500 bg-red-50'
-        : option === currentSentence.correct && feedback === 'incorrect'
-        ? 'border-green-500 bg-green-50'
-        : 'border-gray-300 opacity-50'
-}`}
+                                    className={buttonClass}
                                 >
                                     {option}
                                 </button>
@@ -1107,7 +1141,7 @@ const handleAnswer = (option) => {
                                 ? 'bg-green-100 text-green-800'
                                 : 'bg-red-100 text-red-800'
                         }`}>
-                            {feedback === 'correct' ? '✓ Teisingai!' : `✗ Neteisingai. Teisingas atsakymas: ${currentSentence.correct}`}
+                            {feedback === 'correct' ? '✓ Teisingai!' : `✗ Neteisingai. Teisingas atsakymas: ${correctAnswer}`}
                         </div>
                     )}
                 </div>
@@ -1122,13 +1156,98 @@ const handleAnswer = (option) => {
         </div>
     );
 }; 
+
+            const CompletionScreen = () => {
+                console.log('CompletionScreen rendering!');
+                console.log('Score:', score);
+                const percentage = score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0;
+                console.log('Percentage:', percentage);
+                let message = '';
+                let emoji = '';
+                
+                if (percentage === 100) {
+                    message = 'Puiku! Tobulas rezultatas!';
+                    emoji = '🎉';
+                } else if (percentage >= 80) {
+                    message = 'Labai gerai!';
+                    emoji = '😊';
+                } else if (percentage >= 60) {
+                    message = 'Gerai, bet galima geriau!';
+                    emoji = '👍';
+                } else {
+                    message = 'Reikia daugiau praktikos!';
+                    emoji = '💪';
+                }
+                
+                console.log('Message:', message, 'Emoji:', emoji);
+                
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-6 flex items-center justify-center">
+                        <div className="max-w-2xl w-full">
+                            <div className="bg-white rounded-xl shadow-2xl p-12 text-center">
+                                <div className="text-8xl mb-6">{emoji}</div>
+                                <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                                    Baigta!
+                                </h2>
+                                <p className="text-2xl text-gray-600 mb-8">{message}</p>
+                                
+                                <div className="bg-gray-50 rounded-lg p-8 mb-8">
+                                    <div className="text-6xl font-bold text-indigo-600 mb-2">
+                                        {percentage}%
+                                    </div>
+                                    <div className="text-xl text-gray-600 mb-4">
+                                        {score.correct} iš {score.total} teisingų atsakymų
+                                    </div>
+                                    <div className="w-full bg-gray-200 rounded-full h-4">
+                                        <div 
+                                            className="bg-indigo-600 h-4 rounded-full transition-all duration-500"
+                                            style={{ width: `${percentage}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex gap-4 justify-center">
+                                    <button
+                                        onClick={() => {
+                                            setMode('menu');
+                                            setScore({ correct: 0, total: 0 });
+                                            setCurrentIndex(0);
+                                            setFeedback('');
+                                        }}
+                                        className="px-8 py-4 bg-indigo-600 text-white rounded-lg font-semibold text-lg hover:bg-indigo-700 transition-colors shadow-lg"
+                                    >
+                                        Grįžti į meniu
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setCurrentIndex(0);
+                                            setScore({ correct: 0, total: 0 });
+                                            setFeedback('');
+                                            setSelectedOption(null);
+                                            setUserAnswer('');
+                                            // Go back to the mode user was in
+                                            setMode(lastMode);
+                                        }}
+                                        className="px-8 py-4 bg-gray-600 text-white rounded-lg font-semibold text-lg hover:bg-gray-700 transition-colors shadow-lg"
+                                    >
+                                        Bandyti dar kartą
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
             return (
                 <>
+                    {console.log('Rendering with mode:', mode)}
                     {mode === 'menu' && <MenuScreen />}
                     {mode === 'flashcards' && <FlashcardsMode />}
                     {mode === 'multipleChoice' && <MultipleChoiceMode />}
                     {mode === 'typing' && <TypingMode />}
                 {mode === 'sentenceCompletion' && <SentenceCompletionMode />}
+                {mode === 'completed' && <CompletionScreen />}
                 </>
             );
         }
